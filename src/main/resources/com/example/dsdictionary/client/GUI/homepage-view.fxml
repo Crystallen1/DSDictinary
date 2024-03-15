@@ -1,16 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.dsdictionary.client.GUI.HomePageController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.dsdictionary.client.GUI.HomePageController">
+    <bottom>
+        <VBox alignment="BOTTOM_CENTER">
+            <TabPane fx:id="tabPane" side="BOTTOM" tabClosingPolicy="UNAVAILABLE">
+                <tabs>
+                    <Tab fx:id="homeTab" text="Home">
+                        <!-- 内容将通过控制器动态加载 -->
+                    </Tab>
+                    <Tab fx:id="settingsTab" text="Settings">
+                        <!-- 内容将通过控制器动态加载 -->
+                    </Tab>
+                </tabs>
+            </TabPane>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+        </VBox>
+    </bottom>
+</BorderPane>

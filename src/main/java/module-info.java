@@ -9,4 +9,7 @@ module com.example.dsdictionary {
 
     exports com.example.dsdictionary.client.GUI;
     opens com.example.dsdictionary.client.GUI to javafx.fxml;
+
+    exports com.example.dsdictionary.models;
+
 }
