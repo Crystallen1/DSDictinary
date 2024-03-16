@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.dsdictionary.client.GUI.AddNewWordPageController"
+            fx:controller="com.example.dsdictionary.client.GUI.UpdatePageController"
             prefHeight="400.0" prefWidth="600.0">
     <VBox>
         <Label fx:id="Label"/>
@@ -26,4 +26,5 @@
         </HBox>
         <Button text="confirm" onAction="#onConfirmButtonClick"/>
     </VBox>
+
 </AnchorPane>

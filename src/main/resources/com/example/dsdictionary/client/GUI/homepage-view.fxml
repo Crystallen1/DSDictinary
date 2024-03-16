@@ -11,14 +11,12 @@
     <bottom>
         <VBox alignment="BOTTOM_CENTER">
             <TabPane fx:id="tabPane" side="BOTTOM" tabClosingPolicy="UNAVAILABLE">
-                <tabs>
-                    <Tab fx:id="homeTab" text="Home">
-                        <!-- 内容将通过控制器动态加载 -->
-                    </Tab>
-                    <Tab fx:id="settingsTab" text="Settings">
-                        <!-- 内容将通过控制器动态加载 -->
-                    </Tab>
-                </tabs>
+                <Tab fx:id="homeTab" text="Home">
+                    <!-- 内容将通过控制器动态加载 -->
+                </Tab>
+                <Tab fx:id="settingsTab" text="Settings">
+                    <!-- 内容将通过控制器动态加载 -->
+                </Tab>
             </TabPane>
 
         </VBox>
