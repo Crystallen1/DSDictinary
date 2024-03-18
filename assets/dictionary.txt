@@ -1,0 +1,2 @@
+apple:n, A fruit that is round and usually red, green, or yellow.
+banana:n, A long curved fruit with a thick peel that is yellow when ripe.
