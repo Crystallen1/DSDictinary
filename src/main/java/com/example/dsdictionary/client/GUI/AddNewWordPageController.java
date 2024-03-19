@@ -1,5 +1,6 @@
 package com.example.dsdictionary.client.GUI;
 
+import com.example.dsdictionary.client.network.ClientTask;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -26,6 +27,12 @@ public class AddNewWordPageController {
 
     public void onConfirmButtonClick(ActionEvent actionEvent) {
         if (wordAdder != null) {
+            String messageToSend ="{\"command\": \"add\", \"word\": \" "+wordText.getText()+"\", \"meaning\": \""+partOfSpeechText.getText()+","+meaningText.getText()+"\"}";
+            ClientTask clientTask = new ClientTask("localhost", 20016, messageToSend, response -> {
+                // 更新UI，显示来自服务器的响应
+                System.out.println("Received from server: " + response);
+            });
+            new Thread(clientTask).start();
             boolean success = wordAdder.addWord(wordText.getText(), partOfSpeechText.getText(), meaningText.getText());
             if (success) {
                 // 关闭窗口

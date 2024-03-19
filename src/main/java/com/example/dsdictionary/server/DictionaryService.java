@@ -1,15 +1,16 @@
 package com.example.dsdictionary.server;
 
-import java.io.*;
-import java.nio.file.*;
-import java.util.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DictionaryLoader {
-    private Map<String, String> dictionary;
+public class DictionaryService {
+    private final Map<String, String> dictionary = new ConcurrentHashMap<>();
 
-    public DictionaryLoader(String filePath) {
-        this.dictionary = new ConcurrentHashMap<>();//保证线程安全
+    public DictionaryService(String filePath) {
         loadDictionary(filePath);
     }
 
@@ -26,7 +27,7 @@ public class DictionaryLoader {
                     if (details.length == 2) {
                         String partOfSpeech = details[0].trim();
                         String definition = details[1].trim();
-                        dictionary.put(word, partOfSpeech + ": " + definition);
+                        dictionary.put(word, partOfSpeech + ", " + definition);
                     }
                 }
             }
@@ -35,11 +36,23 @@ public class DictionaryLoader {
         }
     }
 
-    public String getDefinition(String word) {
+    public String getMeaning(String word) {
         return dictionary.getOrDefault(word, "Word not found");
     }
 
-    // For testing and verification
+    public void addWord(String word, String meaning) {
+        dictionary.put(word, meaning);
+    }
+
+    public void removeWord(String word) {
+        dictionary.remove(word);
+    }
+
+    public void updateWord(String word, String newMeaning) {
+        dictionary.replace(word, newMeaning);
+    }
+
+    // Additional methods as needed...
     public void printAll() {
         for (Map.Entry<String, String> entry : dictionary.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
