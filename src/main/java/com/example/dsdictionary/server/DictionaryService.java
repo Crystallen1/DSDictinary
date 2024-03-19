@@ -10,6 +10,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DictionaryService {
     private final Map<String, String> dictionary = new ConcurrentHashMap<>();
 
+    public Map<String, String> getDictionary() {
+        return dictionary;
+    }
+
     public DictionaryService(String filePath) {
         loadDictionary(filePath);
     }

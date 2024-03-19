@@ -1,2 +1,12 @@
 apple:n, A fruit that is round and usually red, green, or yellow.
 banana:n, A long curved fruit with a thick peel that is yellow when ripe.
+cat:n, A small domesticated carnivorous mammal with soft fur, a short snout, and retractable claws.
+run:v, To move at a speed faster than a walk, never having both feet on the ground at the same time.
+happy:adj, Feeling or showing pleasure or contentment.
+quickly:adv, At a fast speed; rapidly.
+table:n, A piece of furniture with a flat top and one or more legs, providing a level surface for eating, writing, or working.
+write:v, To mark (letters, words, or other symbols) on a surface, typically paper, with a pen, pencil, or similar implement.
+beautiful:adj, Pleasing the senses or mind aesthetically.
+eagerly:adv, With keen interest or enthusiasm.
+computer:n, An electronic device for storing and processing data, typically in binary form, according to instructions given to it in a variable program.
+navigate:v, To plan and direct the course of a vehicle, particularly a ship or aircraft, using instruments or maps.

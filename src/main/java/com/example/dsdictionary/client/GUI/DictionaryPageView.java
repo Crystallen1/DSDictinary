@@ -4,6 +4,7 @@ import com.example.dsdictionary.client.network.ClientTask;
 import com.example.dsdictionary.models.word;
 import com.example.dsdictionary.protocol.Request;
 import com.example.dsdictionary.protocol.Response;
+import com.google.gson.reflect.TypeToken;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +15,13 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import com.google.gson.Gson;
 
+
+import java.lang.reflect.Type;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class DictionaryPageView implements WordAdder{
     public ListView<word> listView;
@@ -51,9 +57,37 @@ public class DictionaryPageView implements WordAdder{
                 };
             }
         });
+        updateList();
+    }
 
-        // 示例：加载数据到ListView
-        listView.getItems().addAll(new word("Label 1","v","a"), new word("Label 2","a","b"), new word("Label 3","a","g"));
+    public void clearList(){
+        listView.getItems().clear();
+    }
+
+    public  void updateList(){
+        String messageToSend = "{\"command\": \"init\", \"word\": \" "+"\", \"meaning\": \"\"}";
+        ClientTask clientTask = new ClientTask("localhost", 20016, messageToSend, response -> {
+            // 更新UI，显示来自服务器的响应
+            System.out.println("Received from server: " + response);
+            Gson gson = new Gson();
+
+            ConcurrentHashMap<String, String> deserializedMap = gson.fromJson(response.getMessage(), ConcurrentHashMap.class);
+            System.out.println("Deserialized map: " + deserializedMap);
+            String word;
+            String POS="";
+            String meaning="";
+            for (Map.Entry<String,String> entry:deserializedMap.entrySet()){
+                word=entry.getKey();
+                String value = entry.getValue();
+                String[] parts = value.split(",", 2);  // 分割成两部分
+                if (parts.length == 2) {  // 确保value确实包含两部分
+                    meaning = parts[0];
+                    POS = parts[1];
+                }
+                listView.getItems().add(new word(word,POS,meaning));
+            }
+        });
+        new Thread(clientTask).start(); // 在新线程中运行客户端任务
     }
 
     public void deleteWord(ActionEvent event, word word){
@@ -61,6 +95,8 @@ public class DictionaryPageView implements WordAdder{
         ClientTask clientTask = new ClientTask("localhost", 20016, messageToSend, response -> {
             // 更新UI，显示来自服务器的响应
             System.out.println("Received from server: " + response);
+            clearList();
+            updateList();
         });
         new Thread(clientTask).start(); // 在新线程中运行客户端任务
     }
@@ -95,12 +131,23 @@ public class DictionaryPageView implements WordAdder{
     public boolean addWord(String label, String partOfSpeech, String meaning) {
         try {
             // 添加单词的逻辑，这里简单地添加到ListView作为示例
-            listView.getItems().addAll(new word(label, partOfSpeech, meaning));
+            label= label.replace(" ","");
+            partOfSpeech=partOfSpeech.replace(" ","");
+            meaning=meaning.replace(" ","");
+            String messageToSend = "{\"command\": \"add\", \"word\": \" "+label+"\", \"meaning\": \""+partOfSpeech+meaning+"\"}";
+            ClientTask clientTask = new ClientTask("localhost", 20016, messageToSend, response -> {
+                // 更新UI，显示来自服务器的响应
+                System.out.println("Received from server: " + response);
+                clearList();
+                updateList();
+            });
+            new Thread(clientTask).start(); // 在新线程中运行客户端任务
             return true; // 成功
         } catch (Exception e) {
             // 处理任何异常
             e.printStackTrace();
             return false; // 失败
-        }    }
+        }
+    }
 
 }

@@ -54,6 +54,10 @@ public class ClientHandler extends Thread {
                             dictionaryService.updateWord(word,meaningToUpdate);
                             writer.println(gson.toJson(new Response("success","Word updated")));
                             break;
+                        case "INIT":
+                            String totalDictionary = gson.toJson(dictionaryService.getDictionary());
+                            writer.println(gson.toJson(new Response("success",totalDictionary)));
+                            break;
                         default:
                             writer.println(gson.toJson(new Response("error","wrong command")));
                             break;
