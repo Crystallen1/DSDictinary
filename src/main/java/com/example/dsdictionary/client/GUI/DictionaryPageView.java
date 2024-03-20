@@ -104,8 +104,15 @@ public class DictionaryPageView implements WordAdder{
     public void onSearchButtonClick(ActionEvent actionEvent) {
         String messageToSend = "{\"command\": \"get\", \"word\": \" "+textBox.getText()+"\", \"meaning\": \"\"}";
         ClientTask clientTask = new ClientTask("localhost", 20016, messageToSend, response -> {
-            // 更新UI，显示来自服务器的响应
             System.out.println("Received from server: " + response);
+            String answer;
+            answer=response.getMessage();
+            if (Objects.equals(answer, "Word not found")){
+                clearList();
+            }else{
+                clearList();
+                listView.getItems().add(new word(textBox.getText(),"a","a"));
+            }
         });
         new Thread(clientTask).start(); // 在新线程中运行客户端任务
     }
@@ -150,4 +157,8 @@ public class DictionaryPageView implements WordAdder{
         }
     }
 
+    public void onShowAllButtonClick(ActionEvent actionEvent) {
+        clearList();
+        updateList();
+    }
 }

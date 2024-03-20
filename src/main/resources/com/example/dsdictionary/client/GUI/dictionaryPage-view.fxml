@@ -15,6 +15,7 @@
             <HBox alignment="TOP_CENTER">
                 <TextArea fx:id="textBox"/>
                 <Button text="search" onAction="#onSearchButtonClick"/>
+                <Button text="show all" onAction="#onShowAllButtonClick"/>
             </HBox>
             <ListView fx:id="listView" />
         </VBox>

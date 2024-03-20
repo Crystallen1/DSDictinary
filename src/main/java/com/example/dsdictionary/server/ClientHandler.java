@@ -35,6 +35,9 @@ public class ClientHandler extends Thread {
                     String word = request.getWord();
                     word = word.replace(" ","");
                     switch (command.toUpperCase()) {
+                        case "CONNECT":
+                            writer.println(gson.toJson(new Response("success","connect success")));
+                            break;
                         case "GET":
                             String meaning = dictionaryService.getMeaning(word);
                             System.out.println(word);
