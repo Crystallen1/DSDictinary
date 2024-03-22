@@ -1,6 +1,6 @@
 package com.example.dsdictionary.client.GUI;
 
-import com.example.dsdictionary.models.word;
+import com.example.dsdictionary.models.Word;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +16,7 @@ public class UpdatePageView {
     @FXML
     public javafx.scene.control.Label Label;
 
-    public void openNewWindow(ActionEvent event, word word) {
+    public void openNewWindow(ActionEvent event, Word word) {
         try {
             // 加载FXML文件
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UpdatePage-view.fxml"));
@@ -24,8 +24,8 @@ public class UpdatePageView {
 
             UpdatePageController controller = fxmlLoader.getController();
             controller.wordText.setText(word.getWord());
-            controller.partOfSpeechText.setText(word.getPartOfSpeech());
-            controller.meaningText.setText(word.getMeaning());
+            controller.partOfSpeechText.setText(word.getMeanings().getFirst().getPartOfSpeech());
+            controller.meaningText.setText(word.getMeanings().getFirst().getDefinition());
 
             // 创建新的窗口（Stage）
             Stage stage = new Stage();

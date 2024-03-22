@@ -1,18 +1,23 @@
 package com.example.dsdictionary.server;
 
+import com.example.dsdictionary.database.DatabaseConnection;
+
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Connection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ServerMain {
     public static void main(String[] args) {
-        int port = 20016; // 选择一个端口号进行监听
+        int port = 20017; // 选择一个端口号进行监听
 
         //创建一个存储字典数据的对象
-        String dictionaryFilePath = "assets/dictionary.txt";
-        DictionaryService dictionaryService = new DictionaryService(dictionaryFilePath);
-        dictionaryService.printAll();
+        DatabaseConnection databaseConnection = new DatabaseConnection();
+        Connection connection = DatabaseConnection.connect();
+
+        DictionaryService dictionaryService = new DictionaryService(connection);
+       dictionaryService.printAll();
 
         //创建线程池
         int threadPoolSize =10;

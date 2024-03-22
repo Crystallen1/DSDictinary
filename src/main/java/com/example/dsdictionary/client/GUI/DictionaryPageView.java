@@ -1,10 +1,7 @@
 package com.example.dsdictionary.client.GUI;
 
 import com.example.dsdictionary.client.network.ClientTask;
-import com.example.dsdictionary.models.word;
-import com.example.dsdictionary.protocol.Request;
-import com.example.dsdictionary.protocol.Response;
-import com.google.gson.reflect.TypeToken;
+import com.example.dsdictionary.models.Word;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,13 +15,12 @@ import javafx.util.Callback;
 import com.google.gson.Gson;
 
 
-import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DictionaryPageView implements WordAdder{
-    public ListView<word> listView;
+    public ListView<Word> listView;
     @FXML
     public TextArea textBox;
 
@@ -32,12 +28,12 @@ public class DictionaryPageView implements WordAdder{
 
 
     public void initialize() {
-        listView.setCellFactory(new Callback<ListView<word>, ListCell<word>>() {
+        listView.setCellFactory(new Callback<ListView<Word>, ListCell<Word>>() {
             @Override
-            public ListCell<word> call(ListView<word> param) {
-                return new ListCell<word>() {
+            public ListCell<Word> call(ListView<Word> param) {
+                return new ListCell<Word>() {
                     @Override
-                    protected void updateItem(word item, boolean empty) {
+                    protected void updateItem(Word item, boolean empty) {
                         super.updateItem(item, empty);
                         if (empty || item == null) {
                             setText(null);
@@ -84,13 +80,13 @@ public class DictionaryPageView implements WordAdder{
                     meaning = parts[0];
                     POS = parts[1];
                 }
-                listView.getItems().add(new word(word,POS,meaning));
+                //listView.getItems().add(new Word(word,POS,meaning));
             }
         });
         new Thread(clientTask).start(); // 在新线程中运行客户端任务
     }
 
-    public void deleteWord(ActionEvent event, word word){
+    public void deleteWord(ActionEvent event, Word word){
         String messageToSend = "{\"command\": \"remove\", \"word\": \" "+word.getWord()+"\", \"meaning\": \"\"}";
         ClientTask clientTask = new ClientTask("localhost", 20016, messageToSend, response -> {
             // 更新UI，显示来自服务器的响应
@@ -111,7 +107,7 @@ public class DictionaryPageView implements WordAdder{
                 clearList();
             }else{
                 clearList();
-                listView.getItems().add(new word(textBox.getText(),"a","a"));
+               // listView.getItems().add(new Word(textBox.getText(),"a","a"));
             }
         });
         new Thread(clientTask).start(); // 在新线程中运行客户端任务
@@ -122,8 +118,8 @@ public class DictionaryPageView implements WordAdder{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("addNewWordPage-view.fxml"));
             Parent root = loader.load();
 
-            AddNewWordPageController addWordController = loader.getController();
-            addWordController.setWordAdder(this);
+//            AddNewWordPageController addWordController = loader.getController();
+//            addWordController.setWordAdder(this);
 
             Stage newWindow = new Stage();
             newWindow.setTitle("Add New Word");

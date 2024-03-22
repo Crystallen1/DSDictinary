@@ -1,18 +1,18 @@
 package com.example.dsdictionary.protocol;
 
+import com.example.dsdictionary.models.Word;
+
 public class Request {
     private String command;
-    private String word;
-    private String meaning;
+    private Word word;
 
     // Constructors, getters, and setters
 
     public Request() {}
 
-    public Request(String command, String word, String meaning) {
+    public Request(String command, Word word) {
         this.command = command;
         this.word = word;
-        this.meaning = meaning;
     }
 
     public String getCommand() {
@@ -23,19 +23,12 @@ public class Request {
         this.command = command;
     }
 
-    public String getWord() {
+    public Word getWord() {
         return word;
     }
 
-    public void setWord(String word) {
+    public void setWord(Word word) {
         this.word = word;
     }
 
-    public String getMeaning() {
-        return meaning;
-    }
-
-    public void setDefinition(String definition) {
-        this.meaning = definition;
-    }
 }

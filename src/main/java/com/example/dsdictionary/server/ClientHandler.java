@@ -2,7 +2,10 @@ package com.example.dsdictionary.server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
 
+import com.example.dsdictionary.models.Meaning;
+import com.example.dsdictionary.models.Word;
 import com.example.dsdictionary.protocol.Request;
 import com.example.dsdictionary.protocol.Response;
 import com.google.gson.Gson;
@@ -32,29 +35,28 @@ public class ClientHandler extends Thread {
                 Request request = gson.fromJson(requestJson, Request.class);
                 if (request != null) {
                     String command = request.getCommand();
-                    String word = request.getWord();
-                    word = word.replace(" ","");
+                    Word word = request.getWord();
+//                    word = word.replace(" ","");
                     switch (command.toUpperCase()) {
                         case "CONNECT":
                             writer.println(gson.toJson(new Response("success","connect success")));
                             break;
                         case "GET":
-                            String meaning = dictionaryService.getMeaning(word);
+                            List<Meaning> meaning = dictionaryService.getMeaning(word.getWord());
                             System.out.println(word);
-                            writer.println(gson.toJson(new Response("success",meaning)));
+                            writer.println(gson.toJson(new Response("success",meaning.toString())));
                             break;
                         case "ADD":
-                            String meaningToAdd = request.getMeaning();
-                            dictionaryService.addWord(word,meaningToAdd);
+                            dictionaryService.addWord(word.getWord(),word.getMeanings());
                             writer.println(gson.toJson(new Response("success","word added")));
                             break;
                         case "REMOVE":
-                            dictionaryService.removeWord(word);
+                            dictionaryService.removeWord(word.getWord());
                             writer.println(gson.toJson(new Response("success","word removed")));
                             break;
                         case "UPDATE":
-                            String meaningToUpdate = request.getMeaning();
-                            dictionaryService.updateWord(word,meaningToUpdate);
+                            //String meaningToUpdate = request.getMeaning();
+                            dictionaryService.updateWord(word.getWord(),word.getMeanings().getFirst());
                             writer.println(gson.toJson(new Response("success","Word updated")));
                             break;
                         case "INIT":
