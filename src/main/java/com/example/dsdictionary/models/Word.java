@@ -40,7 +40,4 @@ public class Word {
         this.meanings = meanings;
     }
 
-    public void removeMeaning(int id) {
-        meanings.removeIf(meaning -> meaning.getId() == id);
-    }
 }

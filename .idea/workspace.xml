@@ -4,22 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="增删改查的基础功能全部实现">
-      <change afterPath="$PROJECT_DIR$/assets/dictionary.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/improveandbug.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/database/DatabaseConnection.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Dictionary.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Meaning.java" afterDir="false" />
+    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="更新字典的储存数据结构，将文件结构改为数据库">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/AddNewWordPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/AddNewWordPageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Word.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/protocol/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/protocol/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/HomePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/SearchpageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/SearchpageView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/WordAdder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/WordAdder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Dictionary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Meaning.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Meaning.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Word.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/DictionaryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/DictionaryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ServerMain.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/UpdatePage-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/UpdatePage-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/addNewWordPage-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/addNewWordPage-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/searchpage-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/searchpage-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +56,7 @@
     </option>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -81,7 +82,6 @@
     "Maven.DSDictionary [install].executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "kotlin-language-version-configured": "true",
     "last_directory_selection": "/Users/chenyun/IdeaProjects/DSDictionary/src/main/java/com/example/dsdictionary/client/GUI",
     "node.js.detected.package.eslint": "true",
@@ -103,7 +103,7 @@
       <recent name="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ServerMain">
+  <component name="RunManager" selected="Application.HomePage">
     <configuration name="DatabaseConnection" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.dsdictionary.database.DatabaseConnection" />
       <module name="DSDictionary" />
@@ -150,9 +150,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.HomePage" />
         <item itemvalue="Application.ServerMain" />
         <item itemvalue="Application.DatabaseConnection" />
-        <item itemvalue="Application.HomePage" />
       </list>
     </recent_temporary>
   </component>
@@ -182,7 +182,7 @@
       <workItem from="1711012948412" duration="1354000" />
       <workItem from="1711014307466" duration="6167000" />
       <workItem from="1711022312680" duration="911000" />
-      <workItem from="1711023227998" duration="7651000" />
+      <workItem from="1711023227998" duration="33635000" />
     </task>
     <task id="LOCAL-00001" summary="build the demo project">
       <option name="closed" value="true" />
@@ -256,7 +256,15 @@
       <option name="project" value="LOCAL" />
       <updated>1710919654517</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="更新字典的储存数据结构，将文件结构改为数据库">
+      <option name="closed" value="true" />
+      <created>1711112707412</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1711112707412</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,7 +291,19 @@
     <MESSAGE value="构建了Request和Response的json类，完成了最基本的服务器客户端通信。与前端的连接还不完善" />
     <MESSAGE value="实现添加、删除后前端的listview的更新" />
     <MESSAGE value="增删改查的基础功能全部实现" />
-    <option name="LAST_COMMIT_MESSAGE" value="增删改查的基础功能全部实现" />
+    <MESSAGE value="更新字典的储存数据结构，将文件结构改为数据库" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新字典的储存数据结构，将文件结构改为数据库" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/AddNewWordPageController.java</url>
+          <line>65</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DSDictionary$HomePage.ic" NAME="HomePage Coverage Results" MODIFIED="1710921188328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

@@ -43,7 +43,7 @@ public class DictionaryService {
                         String partOfSpeech = rsMeanings.getString("partOfSpeech");
                         String definition = rsMeanings.getString("definition");
                         String example = rsMeanings.getString("example");
-                        word.addMeaning(new Meaning(partOfSpeech, definition, example));
+                        word.addMeaning(new Meaning( definition, example,partOfSpeech));
                     }
                 } catch (SQLException e) {
                     System.out.println("Error loading meanings: " + e.getMessage());

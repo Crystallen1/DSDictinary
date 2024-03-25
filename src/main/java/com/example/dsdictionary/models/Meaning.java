@@ -3,7 +3,7 @@ package com.example.dsdictionary.models;
 public class Meaning {
     private  String definition;
     private  String example;
-    private int id;
+
     private  String partOfSpeech;
 
     @Override
@@ -11,7 +11,6 @@ public class Meaning {
         return "Meaning{" +
                 "definition='" + definition + '\'' +
                 ", example='" + example + '\'' +
-                ", id=" + id +
                 ", partOfSpeech='" + partOfSpeech + '\'' +
                 '}';
     }
@@ -22,9 +21,6 @@ public class Meaning {
         this.partOfSpeech = partOfSpeech;
     }
 
-    public int getId() {
-        return id;
-    }
 
     public void setDefinition(String definition) {
         this.definition = definition;
@@ -32,10 +28,6 @@ public class Meaning {
 
     public void setExample(String example) {
         this.example = example;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setPartOfSpeech(String partOfSpeech) {

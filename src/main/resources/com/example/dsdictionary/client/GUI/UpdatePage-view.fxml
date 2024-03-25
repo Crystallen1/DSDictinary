@@ -24,6 +24,10 @@
             <Label text="meaning"/>
             <TextArea fx:id="meaningText"/>
         </HBox>
+        <HBox>
+            <Label text="example"/>
+            <TextArea fx:id="exampleText"/>
+        </HBox>
         <Button text="confirm" onAction="#onConfirmButtonClick"/>
     </VBox>
 

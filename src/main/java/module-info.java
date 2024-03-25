@@ -17,4 +17,6 @@ module com.example.dsdictionary {
 
     opens com.example.dsdictionary.database to java.sql;
 
+    opens com.example.dsdictionary.models to com.google.gson;
+
 }

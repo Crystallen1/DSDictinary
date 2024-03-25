@@ -54,12 +54,6 @@ public class Dictionary {
                 '}';
     }
 
-    public void removeMeaning(String word, int id) {
-        Word existingWord = getWord(word);
-        if (existingWord != null) {
-            existingWord.removeMeaning(id);
-        }
-    }
 
     public void printAll() {
         for (Map.Entry<String, Word> entry : words.entrySet()) {

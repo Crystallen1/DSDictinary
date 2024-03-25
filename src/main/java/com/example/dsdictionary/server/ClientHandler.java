@@ -43,8 +43,12 @@ public class ClientHandler extends Thread {
                             break;
                         case "GET":
                             List<Meaning> meaning = dictionaryService.getMeaning(word.getWord());
-                            System.out.println(word);
-                            writer.println(gson.toJson(new Response("success",meaning.toString())));
+                            String meaningsJson = gson.toJson(meaning);
+                            System.out.println("JSON String: " + meaningsJson);
+                            Response response = new Response("success", meaningsJson);
+                            String responseJson = gson.toJson(response);
+                            System.out.println(responseJson);
+                            writer.println(responseJson);
                             break;
                         case "ADD":
                             dictionaryService.addWord(word.getWord(),word.getMeanings());
@@ -61,6 +65,7 @@ public class ClientHandler extends Thread {
                             break;
                         case "INIT":
                             String totalDictionary = gson.toJson(dictionaryService.getDictionary());
+                            System.out.println(totalDictionary);
                             writer.println(gson.toJson(new Response("success",totalDictionary)));
                             break;
                         default:

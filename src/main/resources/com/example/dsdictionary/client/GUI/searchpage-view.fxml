@@ -14,8 +14,9 @@
     <top>
         <VBox alignment="TOP_CENTER">
             <TextArea fx:id="textBox"/>
-            <Label fx:id="meaning"/>
+            <Accordion fx:id="meaningAccordion"/>
             <Button text="search" onAction="#onSearchButtonClick"/>
         </VBox>
+
     </top>
 </BorderPane>
