@@ -7,24 +7,119 @@ import com.example.dsdictionary.models.Word;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DictionaryService {
     private final Dictionary dictionary = new Dictionary();
+    private final Connection connection;
 
     public Dictionary getDictionary() {
         return dictionary;
     }
 
-    public DictionaryService(Connection connection) {
+    public DictionaryService(Connection connection1) {
+        connection = connection1;
         loadDictionary(connection);
     }
+
+    public void addWordToDatabase(String word, List<Meaning> meanings) {
+        String insertWordSql = "INSERT INTO words (word) VALUES (?);";
+        String insertMeaningSql = "INSERT INTO meanings (word_id, partOfSpeech, definition, example) VALUES (?, ?, ?, ?);";
+
+        try {
+            // 开启事务
+            connection.setAutoCommit(false);
+
+            // 插入单词并获取生成的主键（word_id）
+            try (PreparedStatement pstmt = connection.prepareStatement(insertWordSql)) {
+                pstmt.setString(1, word);
+                pstmt.executeUpdate();
+
+                try (Statement stmt = connection.createStatement();
+                     ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid()")) {
+                    if (rs.next()) {
+                        long wordId = rs.getLong(1);
+
+                    // 对于每个意义，插入到 meanings 表
+                    try (PreparedStatement pstmtMeaning = connection.prepareStatement(insertMeaningSql)) {
+                        for (Meaning meaning : meanings) {
+                            pstmtMeaning.setLong(1, wordId);
+                            pstmtMeaning.setString(2, meaning.getPartOfSpeech());
+                            pstmtMeaning.setString(3, meaning.getDefinition());
+                            pstmtMeaning.setString(4, meaning.getExample());
+                            pstmtMeaning.executeUpdate();
+                        }
+                    }
+                }
+            }}
+
+            // 提交事务
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                // 如果出错则回滚
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Error rolling back transaction: " + ex.getMessage());
+            }
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            try {
+                // 恢复自动提交
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error setting auto commit: " + ex.getMessage());
+            }
+        }
+    }
+
+    public void deleteWordAndMeanings(String word) {
+        // SQL 语句用于删除 meanings 表中的条目
+        String deleteMeaningsSql = "DELETE FROM meanings WHERE word_id = (SELECT id FROM words WHERE word = ?);";
+
+        // SQL 语句用于删除 words 表中的条目
+        String deleteWordSql = "DELETE FROM words WHERE word = ?;";
+
+        try {
+            // 开启事务
+            connection.setAutoCommit(false);
+
+            // 首先删除关联的意义
+            try (PreparedStatement pstmtMeaning = connection.prepareStatement(deleteMeaningsSql)) {
+                pstmtMeaning.setString(1, word);
+                pstmtMeaning.executeUpdate();
+            }
+
+            // 然后删除单词本身
+            try (PreparedStatement pstmtWord = connection.prepareStatement(deleteWordSql)) {
+                pstmtWord.setString(1, word);
+                pstmtWord.executeUpdate();
+            }
+
+            // 提交事务
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                // 如果出错则回滚
+                connection.rollback();
+            } catch (SQLException ex) {
+                System.out.println("Error rolling back transaction: " + ex.getMessage());
+            }
+            System.out.println("SQL Error: " + e.getMessage());
+        } finally {
+            try {
+                // 恢复自动提交
+                connection.setAutoCommit(true);
+            } catch (SQLException ex) {
+                System.out.println("Error setting auto commit: " + ex.getMessage());
+            }
+        }
+    }
+
+
 
     // 加载数据库中的词典数据
     public void loadDictionary(Connection connection) {
@@ -62,11 +157,13 @@ public class DictionaryService {
 
     public void addWord(String word, List<Meaning> meaning) {
         dictionary.addWord(word,meaning);
+        addWordToDatabase(word,meaning);
     }
 
 
     public void removeWord(String word) {
         dictionary.removeWord(word);
+        deleteWordAndMeanings(word);
     }
 
     public void updateWord(String word, Meaning meaning) {

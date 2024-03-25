@@ -102,7 +102,10 @@ public class DictionaryPageView implements WordAdder{
     }
 
     public void deleteWord(ActionEvent event, Word word){
-        String messageToSend = "{\"command\": \"remove\", \"word\": \" "+word.getWord()+"\", \"meaning\": \"\"}";
+        Word deletedWord = new Word(word.getWord());
+        Request request = new Request("remove", word);
+        Gson gson = new Gson();
+        String messageToSend = gson.toJson(request);
         ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
             // 更新UI，显示来自服务器的响应
             System.out.println("Received from server: " + response);
@@ -148,7 +151,6 @@ public class DictionaryPageView implements WordAdder{
     @Override
     public boolean addWord(String label, List<Meaning> meaning) {
         try {
-            // 添加单词的逻辑，这里简单地添加到ListView作为示例
             label= label.replace(" ","");
             Word word = new Word(label);
             word.addMeanings(meaning);

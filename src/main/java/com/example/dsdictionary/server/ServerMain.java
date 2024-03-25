@@ -23,7 +23,6 @@ public class ServerMain {
         int threadPoolSize =10;
         ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);//创建一个固定大小的线程池
 
-
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server is listening on port " + port);
             while (true) {
