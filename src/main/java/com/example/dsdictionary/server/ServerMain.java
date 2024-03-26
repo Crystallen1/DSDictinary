@@ -7,10 +7,22 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ServerMain {
+    private static final Logger logger = LogManager.getLogger(ServerMain.class);
+
     public static void main(String[] args) {
-        int port = 20017; // 选择一个端口号进行监听
+        int port = 20017; // 默认端口号
+        if (args.length > 0) {
+            try {
+                port = Integer.parseInt(args[0]); // 尝试将第一个参数转换为整数作为端口号
+            } catch (NumberFormatException e) {
+                logger.error("Invalid port number provided. Using default port " + port);
+                System.err.println("Invalid port number provided. Using default port " + port);
+            }
+        }
 
         //创建一个存储字典数据的对象
         DatabaseConnection databaseConnection = new DatabaseConnection();
@@ -32,6 +44,7 @@ public class ServerMain {
                 executorService.execute(clientHandler); // 使用线程池来管理线程
             }
         } catch (Exception e) {
+            logger.error("Server exception: " + e.getMessage());
             System.out.println("Server exception: " + e.getMessage());
             e.printStackTrace();
         }finally {

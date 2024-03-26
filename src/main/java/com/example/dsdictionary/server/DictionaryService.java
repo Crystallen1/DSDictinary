@@ -3,6 +3,8 @@ package com.example.dsdictionary.server;
 import com.example.dsdictionary.models.Dictionary;
 import com.example.dsdictionary.models.Meaning;
 import com.example.dsdictionary.models.Word;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,6 +15,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DictionaryService {
+    private static final Logger logger = LogManager.getLogger(DictionaryService.class);
+
     private final Dictionary dictionary = new Dictionary();
     private final Connection connection;
 
@@ -60,17 +64,21 @@ public class DictionaryService {
             connection.commit();
         } catch (SQLException e) {
             try {
+                logger.info("rollback: "+ e.getMessage());
                 // 如果出错则回滚
                 connection.rollback();
             } catch (SQLException ex) {
+                logger.error("Error rolling back transaction: " + ex.getMessage());
                 System.out.println("Error rolling back transaction: " + ex.getMessage());
             }
             System.out.println("SQL Error: " + e.getMessage());
         } finally {
             try {
                 // 恢复自动提交
+                logger.info("add success");
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
+                logger.error("Error setting auto commit: " + ex.getMessage());
                 System.out.println("Error setting auto commit: " + ex.getMessage());
             }
         }
@@ -104,16 +112,20 @@ public class DictionaryService {
         } catch (SQLException e) {
             try {
                 // 如果出错则回滚
+                logger.info("SQL Error: " + e.getMessage());
                 connection.rollback();
             } catch (SQLException ex) {
+                logger.error("Error rolling back transaction: " + ex.getMessage());
                 System.out.println("Error rolling back transaction: " + ex.getMessage());
             }
             System.out.println("SQL Error: " + e.getMessage());
         } finally {
             try {
                 // 恢复自动提交
+                logger.info("delete success");
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
+                logger.error("Error setting auto commit: " + ex.getMessage());
                 System.out.println("Error setting auto commit: " + ex.getMessage());
             }
         }
@@ -141,12 +153,13 @@ public class DictionaryService {
                         word.addMeaning(new Meaning( definition, example,partOfSpeech));
                     }
                 } catch (SQLException e) {
+                    logger.error("Error loading meanings: " + e.getMessage());
                     System.out.println("Error loading meanings: " + e.getMessage());
                 }
-
                 dictionary.addWord(word);
             }
         } catch (SQLException e) {
+            logger.error("Error loading dictionary: " + e.getMessage());
             System.out.println("Error loading dictionary: " + e.getMessage());
         }
     }
@@ -167,6 +180,7 @@ public class DictionaryService {
             resultSet = checkWordStmt.executeQuery();
 
             if (!resultSet.next()) {
+                logger.error("Error: The word '" + word + "' does not exist in the dictionary.");
                 System.out.println("Error: The word '" + word + "' does not exist in the dictionary.");
                 return;
             }
@@ -187,7 +201,9 @@ public class DictionaryService {
             try {
                 // 出现异常，回滚事务
                 connection.rollback();
+                logger.info("SQL Error: "+e.getMessage());
             } catch (SQLException ex) {
+                logger.error("Error Update Dictionary: "+ex.getMessage());
                 ex.printStackTrace();
             }
             e.printStackTrace();

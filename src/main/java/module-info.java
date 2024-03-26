@@ -8,6 +8,7 @@ module com.example.dsdictionary {
     requires eu.hansolo.tilesfx;
     requires com.google.gson;
     requires java.sql;
+    requires org.apache.logging.log4j;
 
     exports com.example.dsdictionary.client.GUI;
     opens com.example.dsdictionary.client.GUI to javafx.fxml;
