@@ -38,13 +38,19 @@ public class Dictionary {
     }
 
     public void addOrUpdateMeaning(String word, String partOfSpeech, String definition, String example) {
-        words.compute(word, (k, existingWord) -> {
-            if (existingWord == null) {
-                existingWord = new Word(word);
-            }
-            existingWord.addMeaning(new Meaning(partOfSpeech, definition, example));
-            return existingWord;
-        });
+        Word existingWord = words.get(word);
+
+        if (existingWord == null) {
+            // 如果单词不存在，返回错误信息或抛出异常
+            System.out.println("Error: The word '" + word + "' does not exist in the dictionary.");
+            return;  // 提前返回，不执行添加操作
+        }
+
+        // 如果单词已存在，添加新的意义
+        existingWord.addMeaning(new Meaning(partOfSpeech, definition, example));
+
+        // 可选：更新映射（如果Word对象是可变的，这可能不是必需的）
+        words.put(word, existingWord);
     }
 
     @Override

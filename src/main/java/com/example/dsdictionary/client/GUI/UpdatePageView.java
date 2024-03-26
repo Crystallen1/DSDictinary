@@ -1,5 +1,6 @@
 package com.example.dsdictionary.client.GUI;
 
+import com.example.dsdictionary.models.Meaning;
 import com.example.dsdictionary.models.Word;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,11 @@ public class UpdatePageView {
 
     @FXML
     public javafx.scene.control.Label Label;
+    private UpdateCallBack callback;
+
+    public UpdatePageView(UpdateCallBack callback) {
+        this.callback = callback;
+    }
 
     public void openNewWindow(ActionEvent event, Word word) {
         try {
@@ -23,9 +29,21 @@ public class UpdatePageView {
             Parent root = fxmlLoader.load();
 
             UpdatePageController controller = fxmlLoader.getController();
+            controller.setCallback(callback);
             controller.wordText.setText(word.getWord());
-            controller.partOfSpeechText.setText(word.getMeanings().getFirst().getPartOfSpeech());
-            controller.meaningText.setText(word.getMeanings().getFirst().getDefinition());
+            StringBuilder output = new StringBuilder();
+            for (Meaning element : word.getMeanings()) {
+                output.append(element.getPartOfSpeech());
+                output.append(", ");
+                output.append(element.getDefinition());
+                output.append("\n");
+                output.append("Example: ");
+                output.append(element.getExample());
+                output.append("\n");
+            }
+            System.out.println(output);
+            controller.existingMeaningsText.setText(output.toString());
+
 
             // 创建新的窗口（Stage）
             Stage stage = new Stage();

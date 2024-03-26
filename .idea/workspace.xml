@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="恢复单词列表、查询、添加单词功能">
+    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="把内存更新同步到数据库中，更新操作还没弄">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdateCallBack.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/dictionary.db" beforeDir="false" afterPath="$PROJECT_DIR$/assets/dictionary.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/improveandbug.md" beforeDir="false" afterPath="$PROJECT_DIR$/improveandbug.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Dictionary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/DictionaryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/DictionaryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ServerMain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/UpdatePage-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/example/dsdictionary/client/GUI/UpdatePage-view.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,8 +24,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -172,7 +175,7 @@
       <workItem from="1711012948412" duration="1354000" />
       <workItem from="1711014307466" duration="6167000" />
       <workItem from="1711022312680" duration="911000" />
-      <workItem from="1711023227998" duration="36229000" />
+      <workItem from="1711023227998" duration="49243000" />
     </task>
     <task id="LOCAL-00001" summary="build the demo project">
       <option name="closed" value="true" />
@@ -262,7 +265,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711355009729</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="把内存更新同步到数据库中，更新操作还没弄">
+      <option name="closed" value="true" />
+      <created>1711357610797</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1711357610797</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -291,7 +302,19 @@
     <MESSAGE value="增删改查的基础功能全部实现" />
     <MESSAGE value="更新字典的储存数据结构，将文件结构改为数据库" />
     <MESSAGE value="恢复单词列表、查询、添加单词功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="恢复单词列表、查询、添加单词功能" />
+    <MESSAGE value="把内存更新同步到数据库中，更新操作还没弄" />
+    <option name="LAST_COMMIT_MESSAGE" value="把内存更新同步到数据库中，更新操作还没弄" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/DictionaryService.java</url>
+          <line>227</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DSDictionary$HomePage.ic" NAME="HomePage Coverage Results" MODIFIED="1710921188328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

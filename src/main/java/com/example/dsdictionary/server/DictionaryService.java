@@ -151,6 +151,63 @@ public class DictionaryService {
         }
     }
 
+    public void addOrUpdateMeaningInDB(String word, String partOfSpeech, String definition, String example) {
+        PreparedStatement checkWordStmt = null;
+        PreparedStatement insertMeaningStmt = null;
+        ResultSet resultSet = null;
+
+        try {
+            // 获取数据库连接
+            // 关闭自动提交，开始事务
+            connection.setAutoCommit(false);
+
+            // 检查单词是否存在
+            checkWordStmt = connection.prepareStatement("SELECT id FROM words WHERE word = ?");
+            checkWordStmt.setString(1, word);
+            resultSet = checkWordStmt.executeQuery();
+
+            if (!resultSet.next()) {
+                System.out.println("Error: The word '" + word + "' does not exist in the dictionary.");
+                return;
+            }
+
+            int wordId = resultSet.getInt("id");
+
+            // 插入新的意义
+            insertMeaningStmt = connection.prepareStatement("INSERT INTO meanings (word_id, partOfSpeech, definition, example) VALUES (?, ?, ?, ?)");
+            insertMeaningStmt.setInt(1, wordId);
+            insertMeaningStmt.setString(2, partOfSpeech);
+            insertMeaningStmt.setString(3, definition);
+            insertMeaningStmt.setString(4, example);
+            insertMeaningStmt.executeUpdate();
+
+            // 操作成功，提交事务
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                // 出现异常，回滚事务
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            // 关闭资源
+            try {
+                if (resultSet != null) resultSet.close();
+                if (checkWordStmt != null) checkWordStmt.close();
+                if (insertMeaningStmt != null) insertMeaningStmt.close();
+                if (connection != null) {
+                    connection.setAutoCommit(true); // 恢复自动提交
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     public List<Meaning> getMeaning(String word) {
         return dictionary.getWord(word).getMeanings();
     }
@@ -168,6 +225,7 @@ public class DictionaryService {
 
     public void updateWord(String word, Meaning meaning) {
         dictionary.addOrUpdateMeaning(word, meaning.getDefinition(), meaning.getPartOfSpeech(), meaning.getExample());
+        addOrUpdateMeaningInDB(word, meaning.getDefinition(), meaning.getPartOfSpeech(), meaning.getExample());
     }
 
     // Additional methods as needed...

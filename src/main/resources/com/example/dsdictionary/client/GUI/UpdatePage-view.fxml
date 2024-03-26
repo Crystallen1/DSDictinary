@@ -9,26 +9,36 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.dsdictionary.client.GUI.UpdatePageController"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="600.0" prefWidth="800.0">
     <VBox>
-        <Label fx:id="Label"/>
-        <HBox>
-            <Label text="word"/>
-            <TextArea fx:id="wordText"/>
-        </HBox>
-        <HBox>
-            <Label text="Part of speech"/>
-            <TextArea fx:id="partOfSpeechText"/>
-        </HBox>
-        <HBox>
-            <Label text="meaning"/>
-            <TextArea fx:id="meaningText"/>
-        </HBox>
-        <HBox>
-            <Label text="example"/>
-            <TextArea fx:id="exampleText"/>
-        </HBox>
-        <Button text="confirm" onAction="#onConfirmButtonClick"/>
+        <Label fx:id="label" text="Add New Meaning"/>
+        <ScrollPane>
+            <VBox fx:id="mainContainer">
+
+                <HBox>
+                    <Label text="Word"/>
+                    <TextArea fx:id="wordText" editable="false"/> <!-- 假定这里显示的是要添加含义的单词，并且是不可编辑的 -->
+                </HBox>
+                <Label text="Existing Meanings:"/>
+                <!-- 这里使用不可编辑的TextArea或ListView显示现有的意思 -->
+                <TextArea fx:id="existingMeaningsText" editable="false"/>
+
+                <Label text="Add New Meaning"/>
+                    <HBox>
+                        <Label text="Part of speech"/>
+                        <TextField fx:id="partOfSpeechText"/> <!-- 使用TextField而不是TextArea以节省空间 -->
+                        <Label text="Meaning"/>
+                        <TextField fx:id="meaningText"/>
+                        <Label text="Example"/>
+                        <TextField fx:id="exampleText"/>
+                    </HBox>
+
+            </VBox>
+
+        </ScrollPane>
+        <Button text="Add More Meanings" onAction="#onAddMoreButtonClick"/>
+        <Button text="Confirm" onAction="#onConfirmButtonClick"/>
     </VBox>
+
 
 </AnchorPane>

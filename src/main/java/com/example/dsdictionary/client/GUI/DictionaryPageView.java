@@ -25,16 +25,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DictionaryPageView implements WordAdder{
+public class DictionaryPageView implements WordAdder,UpdateCallBack{
     public ListView<Word> listView;
     @FXML
     public TextArea textBox;
 
-    private final UpdatePageView updatePageView =new UpdatePageView();
-
+    private final UpdatePageView updatePageView =new UpdatePageView(this);
 
     public void initialize() {
-
         listView.setCellFactory(new Callback<ListView<Word>, ListCell<Word>>() {
             @Override
             public ListCell<Word> call(ListView<Word> param) {
@@ -50,7 +48,7 @@ public class DictionaryPageView implements WordAdder{
                             Button button1 = new Button("update");
                             Button button2 = new Button("delete");
 
-                            button1.setOnAction(event-> updatePageView.openNewWindow(event,item));
+                            button1.setOnAction(event->{updatePageView.openNewWindow(event,item);});
                             button2.setOnAction(event ->deleteWord(event,item));
 
                             HBox hBox = new HBox(10, label, button1, button2);
@@ -67,7 +65,7 @@ public class DictionaryPageView implements WordAdder{
         listView.getItems().clear();
     }
 
-    public  void updateList(){
+    public void updateList(){
         Word getWord = new Word("");
         Request request = new Request("init", getWord);
 
