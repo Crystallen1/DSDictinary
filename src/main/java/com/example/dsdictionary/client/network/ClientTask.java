@@ -4,6 +4,7 @@ import com.example.dsdictionary.protocol.Request;
 import com.example.dsdictionary.protocol.Response;
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -45,6 +46,9 @@ public class ClientTask implements Runnable{
             }
 
         }catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "The number of line breaks is not consistent across the strings.！");
+            alert.showAndWait();
+            System.out.println("Error: "+e.getMessage());
             e.printStackTrace();
         }
 

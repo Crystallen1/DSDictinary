@@ -4,12 +4,14 @@ import com.example.dsdictionary.models.Meaning;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AddNewWordPageController {
     @FXML
@@ -31,6 +33,11 @@ public class AddNewWordPageController {
 
 
     public void onConfirmButtonClick(ActionEvent actionEvent) {
+        // 首先弹出一个确认对话框
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "确定要添加吗？");
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
         if (wordAdder != null) {
             String partOfSpeech = partOfSpeechText.getText();
             String meaning= meaningText.getText();
@@ -73,6 +80,7 @@ public class AddNewWordPageController {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "添加单词失败！");
                 alert.showAndWait();
             }
+        }
         }
     }
     private int countLineBreaks(String text) {

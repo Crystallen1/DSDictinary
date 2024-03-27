@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class DictionaryPageView implements WordAdder,UpdateCallBack{
@@ -100,6 +101,9 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
     }
 
     public void deleteWord(ActionEvent event, Word word){
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "确定要删除吗？");
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
         Word deletedWord = new Word(word.getWord());
         Request request = new Request("remove", word);
         Gson gson = new Gson();
@@ -111,7 +115,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
             updateList();
         });
         new Thread(clientTask).start(); // 在新线程中运行客户端任务
-    }
+    }}
 
     public void onSearchButtonClick(ActionEvent actionEvent) {
         String messageToSend = "{\"command\": \"get\", \"word\": \" "+textBox.getText()+"\", \"meaning\": \"\"}";

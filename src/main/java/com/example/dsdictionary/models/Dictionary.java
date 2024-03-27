@@ -89,6 +89,12 @@ public class Dictionary {
             return;  // 提前返回，不执行添加操作
         }
 
+        for (Meaning meaning : existingWord.getMeanings()){
+            if (meaning.getDefinition().equals(definition)){
+
+            }
+        }
+
         // 如果单词已存在，添加新的意义
         existingWord.addMeaning(new Meaning(partOfSpeech, definition, example));
 

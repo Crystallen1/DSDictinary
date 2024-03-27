@@ -239,10 +239,24 @@ public class DictionaryService {
         deleteWordAndMeanings(word);
     }
 
-    public void updateWord(String word, Meaning meaning) {
-        dictionary.addOrUpdateMeaning(word, meaning.getDefinition(), meaning.getPartOfSpeech(), meaning.getExample());
-        addOrUpdateMeaningInDB(word, meaning.getDefinition(), meaning.getPartOfSpeech(), meaning.getExample());
+    public boolean updateWord(String word, Meaning meaning) {
+        Word searchWord = dictionary.getWord(word);
+        for (Meaning existingMeaning : searchWord.getMeanings()) {
+            if (existingMeaning.getDefinition().equals(meaning.getDefinition()) &&
+                    existingMeaning.getPartOfSpeech().equals(meaning.getPartOfSpeech())) {
+                // 意义已存在，更新不成功
+                System.out.println("Info: The meaning already exists for the word '" + word + "'. No update needed.");
+                return false;  // 返回 false 表示更新不成功
+            }
+        }
+
+        // 添加或更新意义
+        dictionary.addOrUpdateMeaning(word,  meaning.getPartOfSpeech(),meaning.getDefinition(), meaning.getExample());
+        addOrUpdateMeaningInDB(word, meaning.getPartOfSpeech(), meaning.getDefinition(), meaning.getExample());
+        return true;  // 返回 true 表示更新成功
     }
+
+
 
     // Additional methods as needed...
     public void printAll() {

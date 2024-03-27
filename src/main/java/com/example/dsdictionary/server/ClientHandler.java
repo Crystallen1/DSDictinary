@@ -68,10 +68,17 @@ public class ClientHandler extends Thread {
                             break;
                         case "UPDATE":
                             logger.info("Update");
-                            //String meaningToUpdate = request.getMeaning();
-                            dictionaryService.updateWord(word.getWord(),word.getMeanings().getFirst());
-                            writer.println(gson.toJson(new Response("success","Word updated")));
+                            boolean updateResult = dictionaryService.updateWord(word.getWord(), word.getMeanings().getFirst());
+                            // 根据 updateResult 返回不同的响应给前端
+                            if (updateResult) {
+                                // 更新成功
+                                writer.println(gson.toJson(new Response("success", "Word updated")));
+                            } else {
+                                // 更新失败，意义已存在
+                                writer.println(gson.toJson(new Response("error", "Update failed: The meaning already exists")));
+                            }
                             break;
+
                         case "INIT":
                             logger.info("Init");
                             String totalDictionary = gson.toJson(dictionaryService.getDictionary());
