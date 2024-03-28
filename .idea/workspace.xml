@@ -4,17 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="更新添加单个意思完成">
+    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="常规功能全部实现">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/MyThreadPool.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/dictionary.db" beforeDir="false" afterPath="$PROJECT_DIR$/assets/dictionary.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/improveandbug.md" beforeDir="false" afterPath="$PROJECT_DIR$/improveandbug.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/AddNewWordPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/AddNewWordPageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/network/ClientTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/network/ClientTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/SearchpageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/SearchpageView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Dictionary.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/models/Word.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ClientHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/DictionaryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/DictionaryService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ServerMain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ServerMain.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +25,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="FxmlFile" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -291,7 +291,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711418602589</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="常规功能全部实现">
+      <option name="closed" value="true" />
+      <created>1711550001962</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1711550001962</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -322,7 +330,8 @@
     <MESSAGE value="恢复单词列表、查询、添加单词功能" />
     <MESSAGE value="把内存更新同步到数据库中，更新操作还没弄" />
     <MESSAGE value="更新添加单个意思完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="更新添加单个意思完成" />
+    <MESSAGE value="常规功能全部实现" />
+    <option name="LAST_COMMIT_MESSAGE" value="常规功能全部实现" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DSDictionary$HomePage.ic" NAME="HomePage Coverage Results" MODIFIED="1710921188328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

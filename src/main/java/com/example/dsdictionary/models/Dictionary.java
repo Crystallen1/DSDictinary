@@ -51,8 +51,15 @@ public class Dictionary {
 
 
     public Word getWord(String word) {
-        return words.get(word);
+        Word foundWord = words.get(word);
+        if (foundWord == null) {
+            // 如果没有找到单词，返回 Word.NOT_FOUND
+            return Word.NOT_FOUND;
+        } else {
+            return foundWord;
+        }
     }
+
 
     public void removeWord(String word) {
         try {

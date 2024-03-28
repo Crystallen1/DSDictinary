@@ -46,8 +46,8 @@ public class ClientTask implements Runnable{
             }
 
         }catch (Exception e) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "The number of line breaks is not consistent across the strings.！");
-            alert.showAndWait();
+//            Alert alert = new Alert(Alert.AlertType.ERROR, "The number of line breaks is not consistent across the strings.！");
+//            alert.showAndWait();
             System.out.println("Error: "+e.getMessage());
             e.printStackTrace();
         }

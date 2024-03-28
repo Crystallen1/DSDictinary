@@ -73,7 +73,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
         Gson gson = new Gson();
         String messageToSend = gson.toJson(request);
 
-        ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response-> {
             // 更新UI，显示来自服务器的响应
             System.out.println("Received from server: " + response);
 

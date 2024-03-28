@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.sql.Connection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import com.example.dsdictionary.models.MyThreadPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,11 +31,12 @@ public class ServerMain {
         Connection connection = DatabaseConnection.connect();
 
         DictionaryService dictionaryService = new DictionaryService(connection);
-       dictionaryService.printAll();
+        dictionaryService.printAll();
 
         //创建线程池
         int threadPoolSize =10;
         ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);//创建一个固定大小的线程池
+        MyThreadPool myThreadPool = new MyThreadPool(threadPoolSize);
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server is listening on port " + port);
@@ -41,14 +44,16 @@ public class ServerMain {
                 Socket socket = serverSocket.accept(); // 等待客户端连接
                 System.out.println("New client connected");
                 ClientHandler clientHandler = new ClientHandler(socket,dictionaryService); // 为每个客户端创建一个新线程
-                executorService.execute(clientHandler); // 使用线程池来管理线程
+                myThreadPool.execute(clientHandler);
+                //executorService.execute(clientHandler); // 使用线程池来管理线程
             }
         } catch (Exception e) {
             logger.error("Server exception: " + e.getMessage());
             System.out.println("Server exception: " + e.getMessage());
             e.printStackTrace();
         }finally {
-            executorService.shutdown(); // 关闭线程池
+            myThreadPool.shutdown();
+            //executorService.shutdown(); // 关闭线程池
         }
     }
 }

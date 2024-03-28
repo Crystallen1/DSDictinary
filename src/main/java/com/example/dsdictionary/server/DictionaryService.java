@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.*;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -225,7 +226,11 @@ public class DictionaryService {
 
 
     public List<Meaning> getMeaning(String word) {
-        return dictionary.getWord(word).getMeanings();
+        if (dictionary.getWord(word)==Word.NOT_FOUND){
+            return Collections.emptyList();
+        }else {
+            return dictionary.getWord(word).getMeanings();
+        }
     }
 
     public void addWord(String word, List<Meaning> meaning) {

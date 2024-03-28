@@ -49,12 +49,21 @@ public class ClientHandler extends Thread {
                         case "GET":
                             logger.info("Get");
                             List<Meaning> meaning = dictionaryService.getMeaning(word.getWord());
-                            String meaningsJson = gson.toJson(meaning);
-                            System.out.println("JSON String: " + meaningsJson);
-                            Response response = new Response("success", meaningsJson);
-                            String responseJson = gson.toJson(response);
-                            System.out.println(responseJson);
-                            writer.println(responseJson);
+                            if (meaning.isEmpty()) {
+                                String meaningsJson = "";
+                                Response response = new Response("empty", meaningsJson);
+                                String responseJson = gson.toJson(response);
+                                System.out.println(responseJson);
+                                writer.println(responseJson);
+                            }else{
+                                String meaningsJson = gson.toJson(meaning);
+                                System.out.println("JSON String: " + meaningsJson);
+                                Response response = new Response("success", meaningsJson);
+                                String responseJson = gson.toJson(response);
+                                System.out.println(responseJson);
+                                writer.println(responseJson);
+                            }
+
                             break;
                         case "ADD":
                             logger.info("Add");
