@@ -48,7 +48,9 @@ public class AddNewWordPageController {
             int exampleLineBreaks = countLineBreaks(example);
             List<Meaning> meaningList = new ArrayList<>();
 
-            if (partOfSpeechLineBreaks == meaningLineBreaks && partOfSpeechLineBreaks == exampleLineBreaks) {
+            boolean success=false;
+
+            if (partOfSpeechLineBreaks == meaningLineBreaks && partOfSpeechLineBreaks == exampleLineBreaks&&partOfSpeechLineBreaks!=0) {
                 // 如果数量相同，输出或记录数量
                 String[] partOfSpeechParts = partOfSpeech.split("\n");
                 String[] meaningParts = meaning.split("\n");
@@ -61,6 +63,11 @@ public class AddNewWordPageController {
                     String combined = partOfSpeechParts[i] + " " + meaningParts[i] + " " + exampleParts[i];
                     System.out.println(combined);
                 }
+                success = wordAdder.addWord(wordText.getText(),meaningList);
+            } else if (partOfSpeechLineBreaks==0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "未添加意思");
+                alert.showAndWait();
+                System.out.println("The number of line breaks is not consistent across the strings.");
             } else {
                 // 如果数量不同，处理不一致的情况
                 // 显示错误消息
@@ -69,8 +76,6 @@ public class AddNewWordPageController {
                 System.out.println("The number of line breaks is not consistent across the strings.");
             }
 
-
-            boolean success = wordAdder.addWord(wordText.getText(),meaningList);
             if (success) {
                 // 关闭窗口
                 Stage stage = (Stage) wordText.getScene().getWindow();

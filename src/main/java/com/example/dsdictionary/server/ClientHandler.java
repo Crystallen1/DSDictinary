@@ -67,13 +67,19 @@ public class ClientHandler extends Thread {
                             break;
                         case "ADD":
                             logger.info("Add");
-                            dictionaryService.addWord(word.getWord(),word.getMeanings());
-                            writer.println(gson.toJson(new Response("success","word added")));
+                            if (dictionaryService.addWord(word.getWord(),word.getMeanings())){
+                                writer.println(gson.toJson(new Response("success","word added")));
+                            }else {
+                                writer.println(gson.toJson(new Response("failure","word exist")));
+                            }
                             break;
                         case "REMOVE":
                             logger.info("Remove");
-                            dictionaryService.removeWord(word.getWord());
-                            writer.println(gson.toJson(new Response("success","word removed")));
+                            if (dictionaryService.removeWord(word.getWord())){
+                                writer.println(gson.toJson(new Response("success","word removed")));
+                            }else {
+                                writer.println(gson.toJson(new Response("failure","word not exist")));
+                            }
                             break;
                         case "UPDATE":
                             logger.info("Update");

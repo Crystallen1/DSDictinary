@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -118,17 +119,27 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
     }}
 
     public void onSearchButtonClick(ActionEvent actionEvent) {
-        String messageToSend = "{\"command\": \"get\", \"word\": \" "+textBox.getText()+"\", \"meaning\": \"\"}";
+        Word word = new Word(textBox.getText());
+        Gson gson =new Gson();
+        String messageToSend =gson.toJson(new Request("get",word));
+
         ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
-            System.out.println("Received from server: " + response);
-            String answer;
-            answer=response.getMessage();
-            if (Objects.equals(answer, "Word not found")){
-                clearList();
+            if ("empty".equals(response.getStatus())){
+                Alert alert = new Alert(Alert.AlertType.ERROR, "未查询到单词");
+                alert.showAndWait();
             }else{
+                String meaningsJson = response.getMessage(); // 直接获取 JSON 字符串
+                Type listType = new TypeToken<List<Meaning>>(){}.getType();
+                List<Meaning> meanings = gson.fromJson(meaningsJson, listType); // 直接解析为 List<Meaning>
+
                 clearList();
-               // listView.getItems().add(new Word(textBox.getText(),"a","a"));
+                word.addMeanings(meanings);
+                listView.getItems().add(word);
+                //meaning.setText(response.getMessage());
+                // 更新UI，显示来自服务器的响应
+                System.out.println("Received from server: " + response);
             }
+
         });
         new Thread(clientTask).start(); // 在新线程中运行客户端任务
     }
@@ -164,8 +175,14 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
             ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
                 // 更新UI，显示来自服务器的响应
                 System.out.println("Received from server: " + response);
-                clearList();
-                updateList();
+                if ("failure".equals(response.getStatus())){
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "添加重复单词");
+                    alert.showAndWait();
+                }else {
+                    clearList();
+                    updateList();
+                }
+
             });
             new Thread(clientTask).start(); // 在新线程中运行客户端任务
             return true; // 成功

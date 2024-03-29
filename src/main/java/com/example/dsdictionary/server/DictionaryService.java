@@ -233,15 +233,27 @@ public class DictionaryService {
         }
     }
 
-    public void addWord(String word, List<Meaning> meaning) {
-        dictionary.addWord(word,meaning);
-        addWordToDatabase(word,meaning);
+    public boolean addWord(String word, List<Meaning> meaning) {
+        if (dictionary.getWord(word)==Word.NOT_FOUND){
+            dictionary.addWord(word,meaning);
+            addWordToDatabase(word,meaning);
+            return true;
+        }else {
+            return false;
+        }
+
     }
 
 
-    public void removeWord(String word) {
-        dictionary.removeWord(word);
-        deleteWordAndMeanings(word);
+    public boolean removeWord(String word) {
+        if (dictionary.getWord(word)==Word.NOT_FOUND){
+            return false;
+        }else {
+            dictionary.removeWord(word);
+            deleteWordAndMeanings(word);
+            return true;
+        }
+
     }
 
     public boolean updateWord(String word, Meaning meaning) {
