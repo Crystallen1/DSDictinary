@@ -9,10 +9,10 @@ This project is the assignment 1 for the Distributed Systems (COMP90015) at the 
 - **Frontend-Backend Separation**: Clearly distinguishes between the frontend user interface and backend service logic, making the system structure clear.
 
 ## Technology Stack
-- Programming language: Java
+- Programming language: Java21
 - Network communication: TCP
 - Multithreading
-- Frontend framework: JavaFX
+- Frontend framework: JavaFX21
 - Build tool: Maven
   
 ## Quick Start
