@@ -33,7 +33,7 @@ public class AddNewWordPageController {
 
 
     public void onConfirmButtonClick(ActionEvent actionEvent) {
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "确定要添加吗？");
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to add it?");
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
 
@@ -62,12 +62,12 @@ public class AddNewWordPageController {
                 }
                 success = wordAdder.addWord(wordText.getText(),meaningList);
             } else if (partOfSpeech.isEmpty()||meaning.isEmpty()||example.isEmpty()) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "未添加意思");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No meaning added!");
                 alert.showAndWait();
                 System.out.println("The number of line breaks is not consistent across the strings.");
             } else {
 
-                Alert alert = new Alert(Alert.AlertType.ERROR, "The number of line breaks is not consistent across the strings.！");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Not a complete meaning structure, you need to check the missing of part of speech or meaning or example!");
                 alert.showAndWait();
                 System.out.println("The number of line breaks is not consistent across the strings.");
             }
@@ -76,7 +76,7 @@ public class AddNewWordPageController {
                 Stage stage = (Stage) wordText.getScene().getWindow();
                 stage.close();
             } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "添加单词失败！");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to add word!");
                 alert.showAndWait();
             }
         }

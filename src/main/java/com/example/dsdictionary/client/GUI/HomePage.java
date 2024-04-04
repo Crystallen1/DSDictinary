@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 public class HomePage extends Application {
     public static int port = 20017;
@@ -47,6 +48,7 @@ public class HomePage extends Application {
     }
 
     public static void main(String[] args) {
+        Locale.setDefault(new Locale("en", "US")); // 设置默认语言为英文
         launch();
     }
 }

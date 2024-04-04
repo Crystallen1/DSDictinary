@@ -29,7 +29,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static com.example.dsdictionary.client.GUI.HomePage.port;
 
+
 public class DictionaryPageView implements WordAdder,UpdateCallBack{
+
     public ListView<Word> listView;
     @FXML
     public TextArea textBox;
@@ -103,7 +105,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
     }
 
     public void deleteWord(ActionEvent event, Word word){
-        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "确定要删除吗？");
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "You sure you want to delete it?");
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
         Word deletedWord = new Word(word.getWord());
@@ -125,7 +127,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
 
         ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
             if ("empty".equals(response.getStatus())){
-                Alert alert = new Alert(Alert.AlertType.ERROR, "未查询到单词");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No word found!");
                 alert.showAndWait();
             }else{
                 String meaningsJson = response.getMessage();
@@ -174,7 +176,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
             ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
                 System.out.println("Received from server: " + response);
                 if ("failure".equals(response.getStatus())){
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "添加重复单词");
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Add repeated words!");
                     alert.showAndWait();
                 }else {
                     clearList();

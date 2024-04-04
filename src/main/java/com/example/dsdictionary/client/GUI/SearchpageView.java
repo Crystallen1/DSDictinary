@@ -31,7 +31,7 @@ public class SearchpageView {
         ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
             if ("empty".equals(response.getStatus())){
                 meaningAccordion.getPanes().clear();
-                Alert alert = new Alert(Alert.AlertType.ERROR, "未查询到单词");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "No word found!");
                 alert.showAndWait();
             }else{
                 String meaningsJson = response.getMessage();
