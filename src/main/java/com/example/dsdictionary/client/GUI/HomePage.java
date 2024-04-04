@@ -10,8 +10,23 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 
 public class HomePage extends Application {
+    public static int port = 20017;
+
+    @Override
+    public void init() throws Exception {
+        Parameters params = getParameters();
+        List<String> rawArgs = params.getRaw();
+        if (!rawArgs.isEmpty()) {
+            try {
+                port = Integer.parseInt(rawArgs.get(0));
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid port number. Using default port " + port);
+            }
+        }
+    }
     @Override
     public void start(Stage stage) throws IOException {
         Word tempWord = new Word("");
@@ -19,10 +34,10 @@ public class HomePage extends Application {
         Gson gson = new Gson();
         String messageToSend = gson.toJson(request);
 
-        ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
             System.out.println("Received from server: " + response);
         });
-        new Thread(clientTask).start(); // 在新线程中运行客户端任务
+        new Thread(clientTask).start();
 
         FXMLLoader fxmlLoader = new FXMLLoader(HomePage.class.getResource("homepage-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 700);

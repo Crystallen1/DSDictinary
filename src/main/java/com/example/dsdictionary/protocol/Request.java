@@ -6,8 +6,6 @@ public class Request {
     private String command;
     private Word word;
 
-    // Constructors, getters, and setters
-
     public Request() {}
 
     public Request(String command, Word word) {

@@ -22,27 +22,27 @@ public class Meaning {
     }
 
 
-    public void setDefinition(String definition) {
+    public synchronized void setDefinition(String definition) {
         this.definition = definition;
     }
 
-    public void setExample(String example) {
+    public synchronized void setExample(String example) {
         this.example = example;
     }
 
-    public void setPartOfSpeech(String partOfSpeech) {
+    public synchronized void setPartOfSpeech(String partOfSpeech) {
         this.partOfSpeech = partOfSpeech;
     }
 
-    public String getDefinition() {
+    public synchronized String getDefinition() {
         return definition;
     }
 
-    public String getExample() {
+    public synchronized String getExample() {
         return example;
     }
 
-    public String getPartOfSpeech() {
+    public synchronized String getPartOfSpeech() {
         return partOfSpeech;
     }
 }

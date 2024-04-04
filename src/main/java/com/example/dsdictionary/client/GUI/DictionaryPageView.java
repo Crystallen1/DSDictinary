@@ -27,6 +27,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.example.dsdictionary.client.GUI.HomePage.port;
+
 public class DictionaryPageView implements WordAdder,UpdateCallBack{
     public ListView<Word> listView;
     @FXML
@@ -74,8 +76,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
         Gson gson = new Gson();
         String messageToSend = gson.toJson(request);
 
-        ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response-> {
-            // 更新UI，显示来自服务器的响应
+        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response-> {
             System.out.println("Received from server: " + response);
 
             Type type = new TypeToken<ConcurrentHashMap<String, ConcurrentHashMap<String, Word>>>(){}.getType();
@@ -86,19 +87,19 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
             Word wordDetail;
 
             for (Map.Entry<String, ConcurrentHashMap<String, Word>> entry : deserializedMap.entrySet()) {
-                wordKey = entry.getKey();  // 外层键
-                ConcurrentHashMap<String, Word> innerMap = entry.getValue();  // 内层映射
+                wordKey = entry.getKey();
+                ConcurrentHashMap<String, Word> innerMap = entry.getValue();
 
                 for (Map.Entry<String, Word> entry2 : innerMap.entrySet()) {
-                    String innerKey = entry2.getKey();  // 内层键
+                    String innerKey = entry2.getKey();
                     wordDetail = entry2.getValue();
-                    listView.getItems().add(wordDetail);// Word 对象
+                    listView.getItems().add(wordDetail);
                     String value = entry2.toString();
                     System.out.println(value);
                 //listView.getItems().add();
             }}
         });
-        new Thread(clientTask).start(); // 在新线程中运行客户端任务
+        new Thread(clientTask).start();
     }
 
     public void deleteWord(ActionEvent event, Word word){
@@ -109,13 +110,12 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
         Request request = new Request("remove", word);
         Gson gson = new Gson();
         String messageToSend = gson.toJson(request);
-        ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
-            // 更新UI，显示来自服务器的响应
+        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
             System.out.println("Received from server: " + response);
             clearList();
             updateList();
         });
-        new Thread(clientTask).start(); // 在新线程中运行客户端任务
+        new Thread(clientTask).start();
     }}
 
     public void onSearchButtonClick(ActionEvent actionEvent) {
@@ -123,25 +123,24 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
         Gson gson =new Gson();
         String messageToSend =gson.toJson(new Request("get",word));
 
-        ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
             if ("empty".equals(response.getStatus())){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "未查询到单词");
                 alert.showAndWait();
             }else{
-                String meaningsJson = response.getMessage(); // 直接获取 JSON 字符串
+                String meaningsJson = response.getMessage();
                 Type listType = new TypeToken<List<Meaning>>(){}.getType();
-                List<Meaning> meanings = gson.fromJson(meaningsJson, listType); // 直接解析为 List<Meaning>
+                List<Meaning> meanings = gson.fromJson(meaningsJson, listType);
 
                 clearList();
                 word.addMeanings(meanings);
                 listView.getItems().add(word);
                 //meaning.setText(response.getMessage());
-                // 更新UI，显示来自服务器的响应
                 System.out.println("Received from server: " + response);
             }
 
         });
-        new Thread(clientTask).start(); // 在新线程中运行客户端任务
+        new Thread(clientTask).start();
     }
 
     public void onAddNewWordButtonClick(ActionEvent actionEvent) {
@@ -172,8 +171,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
             Gson gson = new Gson();
             String messageToSend = gson.toJson(request);
             System.out.println(messageToSend);
-            ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
-                // 更新UI，显示来自服务器的响应
+            ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
                 System.out.println("Received from server: " + response);
                 if ("failure".equals(response.getStatus())){
                     Alert alert = new Alert(Alert.AlertType.ERROR, "添加重复单词");
@@ -184,12 +182,11 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
                 }
 
             });
-            new Thread(clientTask).start(); // 在新线程中运行客户端任务
-            return true; // 成功
+            new Thread(clientTask).start();
+            return true;
         } catch (Exception e) {
-            // 处理任何异常
             e.printStackTrace();
-            return false; // 失败
+            return false;
         }
     }
 

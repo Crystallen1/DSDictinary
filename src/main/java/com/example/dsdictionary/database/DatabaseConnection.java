@@ -7,9 +7,7 @@ import java.sql.Statement;
 
 public class DatabaseConnection {
 
-    private static final String URL = "jdbc:sqlite:assets/dictionary.db"; // 指定数据库文件的路径
-    // 指定SQLite数据库文件的路径
-
+    private static final String JDBC_DRIVER = "org.sqlite.JDBC";
     static {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -21,12 +19,13 @@ public class DatabaseConnection {
 
 
     /**
-     * 连接到SQLite数据库，如果数据库文件不存在则创建
+     * Connect to SQL database
      */
-    public static Connection connect() {
+    public static Connection connect(String dbFilePath) {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(URL);
+            String url = "jdbc:sqlite:" + dbFilePath;
+            conn = DriverManager.getConnection(url);
             System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -35,7 +34,6 @@ public class DatabaseConnection {
     }
 
     public static void createNewTables() {
-        // SQL语句创建words表和meanings表
         String sqlWords = "CREATE TABLE IF NOT EXISTS words (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "word TEXT NOT NULL UNIQUE);";
@@ -48,9 +46,8 @@ public class DatabaseConnection {
                 "example TEXT," +
                 "FOREIGN KEY(word_id) REFERENCES words(id));";
 
-        try (Connection conn = connect();
+        try (Connection conn = connect("assets/dictionary.db");
              Statement stmt = conn.createStatement()) {
-            // 创建表
             stmt.execute(sqlWords);
             stmt.execute(sqlMeanings);
             System.out.println("Tables created.");

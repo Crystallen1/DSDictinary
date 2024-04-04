@@ -30,18 +30,18 @@ public class ClientTask implements Runnable{
         try (Socket socket = new Socket(hostname, port);
              PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
              BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-            // 序列化请求对象为JSON字符串
-            Gson gson = new Gson();
+             Gson gson = new Gson();
 //            String jsonRequest = gson.toJson(messageToSend);
-            // 发送消息到服务器
+            // Send the message to the server
             writer.println(messageToSend);
 
-            // 从服务器接收响应
+            // Read the response from the server
             String jasnResponse = reader.readLine();
 
             if (jasnResponse != null) {
+                // Deserialize the JSON response into a Response object
                 Response response = gson.fromJson(jasnResponse, Response.class);
-                // 使用JavaFX线程来更新UI
+                // Use JavaFX thread to handle UI updates based on the received response
                 Platform.runLater(() -> onMessageReceived.accept(response));
             }
 

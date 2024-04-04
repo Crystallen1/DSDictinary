@@ -14,38 +14,47 @@ import org.apache.logging.log4j.Logger;
 
 public class ServerMain {
     private static final Logger logger = LogManager.getLogger(ServerMain.class);
+    private static final int DEFAULT_PORT = 20017;
+    private static final String DEFAULT_DB_PATH = "assets/dictionary.db";
 
     public static void main(String[] args) {
-        int port = 20017; // 默认端口号
+        int port = DEFAULT_PORT;
+        String dbFilePath = DEFAULT_DB_PATH;
         if (args.length > 0) {
             try {
-                port = Integer.parseInt(args[0]); // 尝试将第一个参数转换为整数作为端口号
+                port = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
                 logger.error("Invalid port number provided. Using default port " + port);
                 System.err.println("Invalid port number provided. Using default port " + port);
             }
         }
 
-        //创建一个存储字典数据的对象
+        if (args.length > 1) {
+            dbFilePath = args[1];
+        }
+
+        System.out.println("Using port: " + port);
+        System.out.println("Using database file: " + dbFilePath);
+
+
         DatabaseConnection databaseConnection = new DatabaseConnection();
-        Connection connection = DatabaseConnection.connect();
+        Connection connection = DatabaseConnection.connect(dbFilePath);
 
         DictionaryService dictionaryService = new DictionaryService(connection);
         dictionaryService.printAll();
 
-        //创建线程池
-        int threadPoolSize =10;
-        ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);//创建一个固定大小的线程池
+        int threadPoolSize =16;
+        //ExecutorService executorService = Executors.newFixedThreadPool(threadPoolSize);
         MyThreadPool myThreadPool = new MyThreadPool(threadPoolSize);
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             System.out.println("Server is listening on port " + port);
             while (true) {
-                Socket socket = serverSocket.accept(); // 等待客户端连接
+                Socket socket = serverSocket.accept();
                 System.out.println("New client connected");
-                ClientHandler clientHandler = new ClientHandler(socket,dictionaryService); // 为每个客户端创建一个新线程
+                ClientHandler clientHandler = new ClientHandler(socket,dictionaryService);
                 myThreadPool.execute(clientHandler);
-                //executorService.execute(clientHandler); // 使用线程池来管理线程
+                //executorService.execute(clientHandler);
             }
         } catch (Exception e) {
             logger.error("Server exception: " + e.getMessage());
@@ -53,7 +62,7 @@ public class ServerMain {
             e.printStackTrace();
         }finally {
             myThreadPool.shutdown();
-            //executorService.shutdown(); // 关闭线程池
+            //executorService.shutdown();
         }
     }
 }

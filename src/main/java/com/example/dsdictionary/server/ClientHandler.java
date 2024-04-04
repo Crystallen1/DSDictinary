@@ -16,8 +16,11 @@ import org.apache.logging.log4j.Logger;
 public class ClientHandler extends Thread {
     private static final Logger logger = LogManager.getLogger(ClientHandler.class);
 
+    // socket to communicate with the client
     private Socket socket;
+    // Service to handle dictionary operations
     private DictionaryService dictionaryService;
+    // JSON parser for converting between JSON strings and Java objects
     private Gson gson;
 
     public ClientHandler(Socket socket, DictionaryService dictionaryService) {
@@ -29,18 +32,25 @@ public class ClientHandler extends Thread {
 
     public void run() {
         try {
+            // Get the input stream from the socket to receive data from the client
             InputStream input = socket.getInputStream();
+            // Wrap the input stream in a BufferedReader to read text data
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            // Get the output stream to send data to the client
             OutputStream output = socket.getOutputStream();
+            // Wrap the output stream in a PrintWriter to send text data
             PrintWriter writer = new PrintWriter(output, true);
 
             String requestJson;
             while ((requestJson = reader.readLine()) != null) {
+                // Deserialize the JSON request to a Request object
                 Request request = gson.fromJson(requestJson, Request.class);
                 if (request != null) {
                     String command = request.getCommand();
                     Word word = request.getWord();
 //                    word = word.replace(" ","");
+
+                    // Handle different commands using a switch-case statement
                     switch (command.toUpperCase()) {
                         case "CONNECT":
                             logger.info("Connect");
@@ -50,12 +60,14 @@ public class ClientHandler extends Thread {
                             logger.info("Get");
                             List<Meaning> meaning = dictionaryService.getMeaning(word.getWord());
                             if (meaning.isEmpty()) {
+                                // If no meanings are found, send an empty response
                                 String meaningsJson = "";
                                 Response response = new Response("empty", meaningsJson);
                                 String responseJson = gson.toJson(response);
                                 System.out.println(responseJson);
                                 writer.println(responseJson);
                             }else{
+                                // If meanings are found, send them as a JSON response
                                 String meaningsJson = gson.toJson(meaning);
                                 System.out.println("JSON String: " + meaningsJson);
                                 Response response = new Response("success", meaningsJson);
@@ -84,12 +96,9 @@ public class ClientHandler extends Thread {
                         case "UPDATE":
                             logger.info("Update");
                             boolean updateResult = dictionaryService.updateWord(word.getWord(), word.getMeanings().getFirst());
-                            // 根据 updateResult 返回不同的响应给前端
                             if (updateResult) {
-                                // 更新成功
                                 writer.println(gson.toJson(new Response("success", "Word updated")));
                             } else {
-                                // 更新失败，意义已存在
                                 writer.println(gson.toJson(new Response("error", "Update failed: The meaning already exists")));
                             }
                             break;

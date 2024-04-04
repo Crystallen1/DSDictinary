@@ -33,7 +33,6 @@ public class AddNewWordPageController {
 
 
     public void onConfirmButtonClick(ActionEvent actionEvent) {
-        // 首先弹出一个确认对话框
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION, "确定要添加吗？");
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -50,13 +49,11 @@ public class AddNewWordPageController {
 
             boolean success=false;
 
-            if (partOfSpeechLineBreaks == meaningLineBreaks && partOfSpeechLineBreaks == exampleLineBreaks&&partOfSpeechLineBreaks!=0) {
-                // 如果数量相同，输出或记录数量
+            if (partOfSpeechLineBreaks == meaningLineBreaks && partOfSpeechLineBreaks == exampleLineBreaks && !partOfSpeech.isEmpty()&&!meaning.isEmpty()&&!example.isEmpty()) {
                 String[] partOfSpeechParts = partOfSpeech.split("\n");
                 String[] meaningParts = meaning.split("\n");
                 String[] exampleParts = example.split("\n");
 
-                // 循环遍历数组，并将相应的部分组合在一起
                 for (int i = 0; i <= partOfSpeechLineBreaks; i++) {
                     Meaning meaning1 = new Meaning(meaningParts[i],exampleParts[i],partOfSpeechParts[i] );
                     meaningList.add(meaning1);
@@ -64,24 +61,21 @@ public class AddNewWordPageController {
                     System.out.println(combined);
                 }
                 success = wordAdder.addWord(wordText.getText(),meaningList);
-            } else if (partOfSpeechLineBreaks==0) {
+            } else if (partOfSpeech.isEmpty()||meaning.isEmpty()||example.isEmpty()) {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "未添加意思");
                 alert.showAndWait();
                 System.out.println("The number of line breaks is not consistent across the strings.");
             } else {
-                // 如果数量不同，处理不一致的情况
-                // 显示错误消息
+
                 Alert alert = new Alert(Alert.AlertType.ERROR, "The number of line breaks is not consistent across the strings.！");
                 alert.showAndWait();
                 System.out.println("The number of line breaks is not consistent across the strings.");
             }
 
             if (success) {
-                // 关闭窗口
                 Stage stage = (Stage) wordText.getScene().getWindow();
                 stage.close();
             } else {
-                // 显示错误消息
                 Alert alert = new Alert(Alert.AlertType.ERROR, "添加单词失败！");
                 alert.showAndWait();
             }

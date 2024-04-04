@@ -18,13 +18,17 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DictionaryService {
     private static final Logger logger = LogManager.getLogger(DictionaryService.class);
 
+    // Instance of Dictionary for word management
     private final Dictionary dictionary = new Dictionary();
+
+    // Database connection instance
     private final Connection connection;
 
     public Dictionary getDictionary() {
         return dictionary;
     }
 
+    // Constructor that initializes the DictionaryService with a database connection
     public DictionaryService(Connection connection1) {
         connection = connection1;
         loadDictionary(connection);
@@ -35,20 +39,17 @@ public class DictionaryService {
         String insertMeaningSql = "INSERT INTO meanings (word_id, partOfSpeech, definition, example) VALUES (?, ?, ?, ?);";
 
         try {
-            // 开启事务
-            connection.setAutoCommit(false);
+            connection.setAutoCommit(false);// Start a transaction
 
-            // 插入单词并获取生成的主键（word_id）
             try (PreparedStatement pstmt = connection.prepareStatement(insertWordSql)) {
-                pstmt.setString(1, word);
-                pstmt.executeUpdate();
+                pstmt.setString(1, word); // Set the word in the SQL statement
+                pstmt.executeUpdate(); // Execute the insert operation
 
                 try (Statement stmt = connection.createStatement();
                      ResultSet rs = stmt.executeQuery("SELECT last_insert_rowid()")) {
                     if (rs.next()) {
-                        long wordId = rs.getLong(1);
+                        long wordId = rs.getLong(1); // Get the ID of the newly inserted word
 
-                    // 对于每个意义，插入到 meanings 表
                     try (PreparedStatement pstmtMeaning = connection.prepareStatement(insertMeaningSql)) {
                         for (Meaning meaning : meanings) {
                             pstmtMeaning.setLong(1, wordId);
@@ -61,13 +62,11 @@ public class DictionaryService {
                 }
             }}
 
-            // 提交事务
-            connection.commit();
+            connection.commit();// Commit the transaction
         } catch (SQLException e) {
             try {
                 logger.info("rollback: "+ e.getMessage());
-                // 如果出错则回滚
-                connection.rollback();
+                connection.rollback();// Roll back the transaction in case of error
             } catch (SQLException ex) {
                 logger.error("Error rolling back transaction: " + ex.getMessage());
                 System.out.println("Error rolling back transaction: " + ex.getMessage());
@@ -75,7 +74,6 @@ public class DictionaryService {
             System.out.println("SQL Error: " + e.getMessage());
         } finally {
             try {
-                // 恢复自动提交
                 logger.info("add success");
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
@@ -85,34 +83,30 @@ public class DictionaryService {
         }
     }
 
+    // Method to delete a word and its related meanings from the database
     public void deleteWordAndMeanings(String word) {
-        // SQL 语句用于删除 meanings 表中的条目
         String deleteMeaningsSql = "DELETE FROM meanings WHERE word_id = (SELECT id FROM words WHERE word = ?);";
 
-        // SQL 语句用于删除 words 表中的条目
         String deleteWordSql = "DELETE FROM words WHERE word = ?;";
 
         try {
-            // 开启事务
             connection.setAutoCommit(false);
 
-            // 首先删除关联的意义
+            // Prepare and execute the deletion of meanings related to the word
             try (PreparedStatement pstmtMeaning = connection.prepareStatement(deleteMeaningsSql)) {
                 pstmtMeaning.setString(1, word);
                 pstmtMeaning.executeUpdate();
             }
 
-            // 然后删除单词本身
+            // Prepare and execute the deletion of the word
             try (PreparedStatement pstmtWord = connection.prepareStatement(deleteWordSql)) {
                 pstmtWord.setString(1, word);
                 pstmtWord.executeUpdate();
             }
 
-            // 提交事务
             connection.commit();
         } catch (SQLException e) {
             try {
-                // 如果出错则回滚
                 logger.info("SQL Error: " + e.getMessage());
                 connection.rollback();
             } catch (SQLException ex) {
@@ -122,7 +116,6 @@ public class DictionaryService {
             System.out.println("SQL Error: " + e.getMessage());
         } finally {
             try {
-                // 恢复自动提交
                 logger.info("delete success");
                 connection.setAutoCommit(true);
             } catch (SQLException ex) {
@@ -134,19 +127,21 @@ public class DictionaryService {
 
 
 
-    // 加载数据库中的词典数据
+    // Method to load the dictionary from the database
     public void loadDictionary(Connection connection) {
         try (Statement statement = connection.createStatement()) {
             ResultSet rsWords = statement.executeQuery("SELECT * FROM words");
 
+            // Iterate over each word in the result set
             while (rsWords.next()) {
                 String wordText = rsWords.getString("word");
                 Word word = new Word(wordText);
 
-                // 为这个单词加载意义，使用新的Statement避免冲突
+                // Load meanings for the current word, using a new Statement to avoid conflicts
                 try (Statement innerStatement = connection.createStatement()) {
                     ResultSet rsMeanings = innerStatement.executeQuery("SELECT * FROM meanings WHERE word_id = " + rsWords.getInt("id"));
 
+                    // Iterate over each meaning in the result set
                     while (rsMeanings.next()) {
                         String partOfSpeech = rsMeanings.getString("partOfSpeech");
                         String definition = rsMeanings.getString("definition");
@@ -157,6 +152,7 @@ public class DictionaryService {
                     logger.error("Error loading meanings: " + e.getMessage());
                     System.out.println("Error loading meanings: " + e.getMessage());
                 }
+                // Add the full word to the dictionary
                 dictionary.addWord(word);
             }
         } catch (SQLException e) {
@@ -165,21 +161,22 @@ public class DictionaryService {
         }
     }
 
+    // Method to add or update a meaning in the database for a given word
     public void addOrUpdateMeaningInDB(String word, String partOfSpeech, String definition, String example) {
         PreparedStatement checkWordStmt = null;
         PreparedStatement insertMeaningStmt = null;
         ResultSet resultSet = null;
 
         try {
-            // 获取数据库连接
-            // 关闭自动提交，开始事务
+            // Disable auto-commit to start a transaction
             connection.setAutoCommit(false);
 
-            // 检查单词是否存在
+            // Check if the word exists in the database
             checkWordStmt = connection.prepareStatement("SELECT id FROM words WHERE word = ?");
             checkWordStmt.setString(1, word);
             resultSet = checkWordStmt.executeQuery();
 
+            // If the word does not exist, log an error and exit the method
             if (!resultSet.next()) {
                 logger.error("Error: The word '" + word + "' does not exist in the dictionary.");
                 System.out.println("Error: The word '" + word + "' does not exist in the dictionary.");
@@ -188,7 +185,7 @@ public class DictionaryService {
 
             int wordId = resultSet.getInt("id");
 
-            // 插入新的意义
+            // Insert the new meaning into the database
             insertMeaningStmt = connection.prepareStatement("INSERT INTO meanings (word_id, partOfSpeech, definition, example) VALUES (?, ?, ?, ?)");
             insertMeaningStmt.setInt(1, wordId);
             insertMeaningStmt.setString(2, partOfSpeech);
@@ -196,11 +193,10 @@ public class DictionaryService {
             insertMeaningStmt.setString(4, example);
             insertMeaningStmt.executeUpdate();
 
-            // 操作成功，提交事务
+            // Commit the transaction if all operations were successful
             connection.commit();
         } catch (SQLException e) {
             try {
-                // 出现异常，回滚事务
                 connection.rollback();
                 logger.info("SQL Error: "+e.getMessage());
             } catch (SQLException ex) {
@@ -209,7 +205,6 @@ public class DictionaryService {
             }
             e.printStackTrace();
         } finally {
-            // 关闭资源
             try {
                 if (resultSet != null) resultSet.close();
                 if (checkWordStmt != null) checkWordStmt.close();
@@ -225,28 +220,37 @@ public class DictionaryService {
     }
 
 
+    // Method to retrieve the meanings of a specified word
     public List<Meaning> getMeaning(String word) {
+        // Check if the word exists in the dictionary
         if (dictionary.getWord(word)==Word.NOT_FOUND){
+            // If the word is not found, return an empty list
             return Collections.emptyList();
         }else {
             return dictionary.getWord(word).getMeanings();
         }
     }
 
+    // Method to add a word and its meanings to the dictionary and database
     public boolean addWord(String word, List<Meaning> meaning) {
+        // Check if the word already exists in the dictionary
         if (dictionary.getWord(word)==Word.NOT_FOUND){
             dictionary.addWord(word,meaning);
             addWordToDatabase(word,meaning);
             return true;
         }else {
+            // If the word already exists, return false and do not add it
             return false;
         }
 
     }
 
 
+    // Method to remove a word and its meanings from the dictionary and database
     public boolean removeWord(String word) {
+        // Check if the word exists in the dictionary
         if (dictionary.getWord(word)==Word.NOT_FOUND){
+            // If the word is not found, return false indicating removal was unsuccessful
             return false;
         }else {
             dictionary.removeWord(word);
@@ -256,26 +260,30 @@ public class DictionaryService {
 
     }
 
+    // Method to update the meaning of a word in the dictionary and database
     public boolean updateWord(String word, Meaning meaning) {
+        // Retrieve the word from the dictionary
         Word searchWord = dictionary.getWord(word);
+
+        // Check if the new meaning already exists for the word
         for (Meaning existingMeaning : searchWord.getMeanings()) {
             if (existingMeaning.getDefinition().equals(meaning.getDefinition()) &&
                     existingMeaning.getPartOfSpeech().equals(meaning.getPartOfSpeech())) {
-                // 意义已存在，更新不成功
+                // If the meaning already exists, no update is needed
                 System.out.println("Info: The meaning already exists for the word '" + word + "'. No update needed.");
-                return false;  // 返回 false 表示更新不成功
+                return false;
             }
         }
 
-        // 添加或更新意义
+        // If the meaning does not exist, add the meaning in the dictionary
         dictionary.addOrUpdateMeaning(word,  meaning.getPartOfSpeech(),meaning.getDefinition(), meaning.getExample());
         addOrUpdateMeaningInDB(word, meaning.getPartOfSpeech(), meaning.getDefinition(), meaning.getExample());
-        return true;  // 返回 true 表示更新成功
+        return true;
     }
 
 
 
-    // Additional methods as needed...
+    //test method
     public void printAll() {
         dictionary.printAll();
     }

@@ -24,7 +24,6 @@ public class UpdatePageView {
 
     public void openNewWindow(ActionEvent event, Word word) {
         try {
-            // 加载FXML文件
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UpdatePage-view.fxml"));
             Parent root = fxmlLoader.load();
 
@@ -44,8 +43,6 @@ public class UpdatePageView {
             System.out.println(output);
             controller.existingMeaningsText.setText(output.toString());
 
-
-            // 创建新的窗口（Stage）
             Stage stage = new Stage();
             stage.setTitle("update");
             stage.setScene(new Scene(root));

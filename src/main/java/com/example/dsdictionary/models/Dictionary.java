@@ -12,7 +12,9 @@ public class Dictionary {
 
     private static final Logger logger = LogManager.getLogger(Dictionary.class);
 
+    // ConcurrentHashMap to store words for thread-safe access
     private final ConcurrentHashMap<String, Word> words = new ConcurrentHashMap<>();
+    // Adds a word with its meaning to the dictionary
     public void addWord(String word, String partOfSpeech, String definition, String example) {
         try {
             words.computeIfAbsent(word, k -> new Word(word)).addMeaning(new Meaning(partOfSpeech, definition, example));
@@ -22,6 +24,7 @@ public class Dictionary {
         }
     }
 
+    // Overloaded method to add a word with a Meaning object
     public void addWord(String word, Meaning meaning) {
         try {
             words.computeIfAbsent(word, k -> new Word(word)).addMeaning(meaning);
@@ -31,6 +34,7 @@ public class Dictionary {
         }
     }
 
+    // Overloaded method to add a word with a list of meanings
     public void addWord(String word, List<Meaning> meanings) {
         try {
             words.computeIfAbsent(word, k -> new Word(word)).addMeanings(meanings);
@@ -40,6 +44,7 @@ public class Dictionary {
         }
     }
 
+    // Overloaded method to add a Word object directly
     public void addWord(Word word) {
         try {
             words.computeIfAbsent(word.getWord(), k -> word);
@@ -50,6 +55,7 @@ public class Dictionary {
     }
 
 
+    // Retrieves a word from the dictionary; returns NOT_FOUND if the word does not exist
     public Word getWord(String word) {
         Word foundWord = words.get(word);
         if (foundWord == null) {
@@ -61,6 +67,7 @@ public class Dictionary {
     }
 
 
+    // Removes a word from the dictionary
     public void removeWord(String word) {
         try {
             words.remove(word);
@@ -70,6 +77,7 @@ public class Dictionary {
         }
     }
 
+    // Updates the meaning of an existing word
     public void updateWord(String word, String partOfSpeech, String definition, String example) {
         try {
             Word existingWord = getWord(word);
@@ -86,26 +94,19 @@ public class Dictionary {
     }
 
 
+    // Adds meaning of an existing word
     public void addOrUpdateMeaning(String word, String partOfSpeech, String definition, String example) {
         Word existingWord = words.get(word);
 
-        if (existingWord == null) {
-            // 如果单词不存在，返回错误信息或抛出异常
-            logger.error("Error: The word '" + word + "' does not exist in the dictionary.");
-            System.out.println("Error: The word '" + word + "' does not exist in the dictionary.");
-            return;  // 提前返回，不执行添加操作
-        }
+//        if (existingWord == null) {
+//            // Log an error if the word does not exist
+//            logger.error("Error: The word '" + word + "' does not exist in the dictionary.");
+//            System.out.println("Error: The word '" + word + "' does not exist in the dictionary.");
+//            return;
+//        }
 
-        for (Meaning meaning : existingWord.getMeanings()){
-            if (meaning.getDefinition().equals(definition)){
-
-            }
-        }
-
-        // 如果单词已存在，添加新的意义
+        // Add the new meaning to the existing word
         existingWord.addMeaning(new Meaning(partOfSpeech, definition, example));
-
-        // 可选：更新映射（如果Word对象是可变的，这可能不是必需的）
         words.put(word, existingWord);
     }
 

@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.dsdictionary.client.GUI.HomePage.port;
+
 public class UpdatePageController {
 
     @FXML
@@ -51,10 +53,9 @@ public class UpdatePageController {
         Gson gson = new Gson();
         String messageToSend = gson.toJson(new Request("update",word));
         //String messageToSend = "{\"command\": \"update\", \"word\": \" "+wordText.getText()+"\", \"meaning\": \""+partOfSpeechText.getText()+","+meaningText.getText()+"\"}";
-        ClientTask clientTask = new ClientTask("localhost", 20017, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
             System.out.println("Received from server: " + response);
             if ("error".equals(response.getStatus())) {
-                // 如果响应状态是错误的，显示一个提示窗口
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Update Failed");
@@ -63,7 +64,6 @@ public class UpdatePageController {
                     alert.showAndWait();
                 });
             } else {
-                // 如果更新成功，可以在这里处理成功的逻辑
                 Platform.runLater(() -> {
                     Stage stage = (Stage) wordText.getScene().getWindow();
                     callback.clearList();
@@ -72,7 +72,7 @@ public class UpdatePageController {
                 });
             }
         });
-        new Thread(clientTask).start(); // 在新线程中运行客户端任务
+        new Thread(clientTask).start();
 
     }}
     private int countLineBreaks(String text) {
@@ -81,7 +81,7 @@ public class UpdatePageController {
 
 
     public void onAddMoreButtonClick(ActionEvent actionEvent) {
-        HBox newMeaningBox = new HBox(10); // 间距设置为10
+        HBox newMeaningBox = new HBox(10);
 
         Label partOfSpeechLabel = new Label("Part of speech");
         TextField partOfSpeechField = new TextField();
@@ -97,6 +97,6 @@ public class UpdatePageController {
 
         newMeaningBox.getChildren().addAll(partOfSpeechLabel, partOfSpeechField, meaningLabel, meaningField, exampleLabel, exampleField);
 
-        mainContainer.getChildren().add(newMeaningBox); // 将新的输入组添加到界面上
+        mainContainer.getChildren().add(newMeaningBox);
     }
 }

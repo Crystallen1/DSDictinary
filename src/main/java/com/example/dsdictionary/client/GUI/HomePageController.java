@@ -21,11 +21,9 @@ public class HomePageController {
 
     public void initialize() {
         try {
-            // 为Home Tab加载视图
             Node homeView = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("searchpage-view.fxml")));
             homeTab.setContent(homeView);
 
-            // 为Settings Tab加载视图
             Node settingsView = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("dictionaryPage-view.fxml")));
             settingsTab.setContent(settingsView);
         } catch (IOException e) {
