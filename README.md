@@ -25,11 +25,11 @@ After running one command, copy the generated jar file before running the second
 
 For the server jar, run the following command:
 ```
-java -jar [jar file name] [port]
+java -jar [jar file name] [port] [path to database file]
 ```
 For the client jar, due to a bug in JavaFX when using Maven to build, we need to download the suitable SDK from the JavaFX official website first, and then run the following command to start:
 ```
-java --module-path [path to SDK lib directory] --add-modules javafx.controls,javafx.fxml -jar [jar file name] [port] [path to database file]
+java --module-path [path to SDK lib directory] --add-modules javafx.controls,javafx.fxml -jar [jar file name] [host name] [port] 
 ```
 The above command includes default values for the port and database file; if the directory structure is the same as the GitHub repository, they can be omitted.
 
