@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 import static com.example.dsdictionary.client.GUI.HomePage.hostName;
@@ -33,55 +35,51 @@ public class ClientTask implements Runnable{
 
     @Override
     public void run() {
-        try {
-            // 创建一个未连接的Socket
-            Socket socket = new Socket();
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+            try {
+                // 创建一个未连接的Socket
+                Socket socket = new Socket();
 
-            // 设置连接超时
-            socket.connect(new InetSocketAddress(hostname, port), connectionTimeout);
+                // 异步执行DNS解析和连接
+                socket.connect(new InetSocketAddress(hostname, port), connectionTimeout);
 
-            // 设置读取超时
-            socket.setSoTimeout(readTimeout);
+                // 设置读取超时
+                socket.setSoTimeout(readTimeout);
 
-            // 作为资源管理的一部分创建PrintWriter和BufferedReader
-            try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+                try (PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+                     BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-                Gson gson = new Gson();
-//            String jsonRequest = gson.toJson(messageToSend);
-                // Send the message to the server
-                writer.println(messageToSend);
+                    Gson gson = new Gson();
+                    writer.println(messageToSend);
 
-                // Read the response from the server
-                String jasnResponse = reader.readLine();
-
-                if (jasnResponse != null) {
-                    // Deserialize the JSON response into a Response object
-                    Response response = gson.fromJson(jasnResponse, Response.class);
-                    // Use JavaFX thread to handle UI updates based on the received response
-                    Platform.runLater(() -> onMessageReceived.accept(response));
+                    String jsonResponse = reader.readLine();
+                    if (jsonResponse != null) {
+                        Response response = gson.fromJson(jsonResponse, Response.class);
+                        Platform.runLater(() -> onMessageReceived.accept(response));
+                    }
                 }
+            } catch (SocketException e) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Network connection error, please check your network connection.");
+                    alert.showAndWait();
+                });
+            } catch (UnknownHostException e) {
+                System.err.println("Unable to resolve the host address: " + hostName);
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Unable to resolve the host address, please check if the network connection or server address is correct.");
+                    alert.showAndWait();
+                });
+            } catch (SocketTimeoutException e) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Network request timed out, please check your network connection and try again.");
+                    alert.showAndWait();
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }catch (SocketException e) {
-            // 处理网络连接问题
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "网络连接出现问题，请检查你的网络连接。!");
-            alert.showAndWait();});
-        } catch (UnknownHostException e) {
-            // 处理主机解析问题
-            System.err.println("无法解析主机地址: " + hostName);
-            e.printStackTrace();
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "无法解析主机地址，请检查网络连接或服务器地址是否正确!");
-            alert.showAndWait();});
-        } catch (SocketTimeoutException e) {
-            // 处理请求超时
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "网络请求超时，请检查网络连接并重试!");
-            alert.showAndWait();});
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
+        });
+        executor.shutdown(); // 不要忘记关闭ExecutorService来释放资源
     }
+
 }
