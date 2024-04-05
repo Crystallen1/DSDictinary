@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static com.example.dsdictionary.client.GUI.HomePage.hostName;
 import static com.example.dsdictionary.client.GUI.HomePage.port;
 
 public class UpdatePageController {
@@ -58,7 +59,7 @@ public class UpdatePageController {
                 Gson gson = new Gson();
                 String messageToSend = gson.toJson(new Request("update",word));
                 //String messageToSend = "{\"command\": \"update\", \"word\": \" "+wordText.getText()+"\", \"meaning\": \""+partOfSpeechText.getText()+","+meaningText.getText()+"\"}";
-                ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
+                ClientTask clientTask = new ClientTask(hostName, port, messageToSend, response -> {
                     System.out.println("Received from server: " + response);
                     if ("error".equals(response.getStatus())) {
                         Platform.runLater(() -> {

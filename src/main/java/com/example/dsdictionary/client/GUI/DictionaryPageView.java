@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.example.dsdictionary.client.GUI.HomePage.hostName;
 import static com.example.dsdictionary.client.GUI.HomePage.port;
 
 
@@ -78,7 +79,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
         Gson gson = new Gson();
         String messageToSend = gson.toJson(request);
 
-        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response-> {
+        ClientTask clientTask = new ClientTask(hostName, port, messageToSend, response-> {
             System.out.println("Received from server: " + response);
 
             Type type = new TypeToken<ConcurrentHashMap<String, ConcurrentHashMap<String, Word>>>(){}.getType();
@@ -112,7 +113,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
         Request request = new Request("remove", word);
         Gson gson = new Gson();
         String messageToSend = gson.toJson(request);
-        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask(hostName, port, messageToSend, response -> {
             System.out.println("Received from server: " + response);
             clearList();
             updateList();
@@ -125,7 +126,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
         Gson gson =new Gson();
         String messageToSend =gson.toJson(new Request("get",word));
 
-        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask(hostName, port, messageToSend, response -> {
             if ("empty".equals(response.getStatus())){
                 Alert alert = new Alert(Alert.AlertType.ERROR, "No word found!");
                 alert.showAndWait();
@@ -173,7 +174,7 @@ public class DictionaryPageView implements WordAdder,UpdateCallBack{
             Gson gson = new Gson();
             String messageToSend = gson.toJson(request);
             System.out.println(messageToSend);
-            ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
+            ClientTask clientTask = new ClientTask(hostName, port, messageToSend, response -> {
                 System.out.println("Received from server: " + response);
                 if ("failure".equals(response.getStatus())){
                     Alert alert = new Alert(Alert.AlertType.ERROR, "Add repeated words!");

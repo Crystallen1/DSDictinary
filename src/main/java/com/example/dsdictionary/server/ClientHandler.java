@@ -59,6 +59,7 @@ public class ClientHandler extends Thread {
                         case "GET":
                             logger.info("Get");
                             List<Meaning> meaning = dictionaryService.getMeaning(word.getWord());
+                            //Thread.sleep(20000);
                             if (meaning.isEmpty()) {
                                 // If no meanings are found, send an empty response
                                 String meaningsJson = "";
@@ -118,7 +119,7 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             logger.error("Error handling client request: " + e.getMessage());
             System.out.println("Error handling client request: " + e.getMessage());
-        } finally {
+        }  finally {
             try {
                 logger.info("Socket success close");
                 socket.close();

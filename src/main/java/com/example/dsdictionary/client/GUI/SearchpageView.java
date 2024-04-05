@@ -15,6 +15,7 @@ import javafx.scene.layout.VBox;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static com.example.dsdictionary.client.GUI.HomePage.hostName;
 import static com.example.dsdictionary.client.GUI.HomePage.port;
 
 public class SearchpageView {
@@ -28,7 +29,7 @@ public class SearchpageView {
         Gson gson =new Gson();
         String messageToSend =gson.toJson(new Request("get",word));
 
-        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask(hostName, port, messageToSend, response -> {
             if ("empty".equals(response.getStatus())){
                 meaningAccordion.getPanes().clear();
                 Alert alert = new Alert(Alert.AlertType.ERROR, "No word found!");

@@ -15,16 +15,24 @@ import java.util.Locale;
 
 public class HomePage extends Application {
     public static int port = 20017;
+    public static String hostName = "localhost";
+
 
     @Override
     public void init() throws Exception {
         Parameters params = getParameters();
         List<String> rawArgs = params.getRaw();
         if (!rawArgs.isEmpty()) {
-            try {
-                port = Integer.parseInt(rawArgs.get(0));
-            } catch (NumberFormatException e) {
-                System.err.println("Invalid port number. Using default port " + port);
+            // Set the host name from the first argument
+            hostName = rawArgs.get(0);
+
+            // Try to parse the port number from the second argument, if present
+            if (rawArgs.size() > 1) {
+                try {
+                    port = Integer.parseInt(rawArgs.get(1));
+                } catch (NumberFormatException e) {
+                    System.err.println("Invalid port number. Using default port " + port);
+                }
             }
         }
     }
@@ -35,7 +43,7 @@ public class HomePage extends Application {
         Gson gson = new Gson();
         String messageToSend = gson.toJson(request);
 
-        ClientTask clientTask = new ClientTask("localhost", port, messageToSend, response -> {
+        ClientTask clientTask = new ClientTask(hostName, port, messageToSend, response -> {
             System.out.println("Received from server: " + response);
         });
         new Thread(clientTask).start();

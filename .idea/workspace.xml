@@ -4,14 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="全部完成">
+    <list default="true" id="08a69bc4-f870-4eee-832b-b1e62bdc06cb" name="Changes" comment="change alert word to English&#10;fix a bug in UpdatePageController">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/dictionary.db" beforeDir="false" afterPath="$PROJECT_DIR$/assets/dictionary.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/AddNewWordPageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/AddNewWordPageController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/DictionaryPageView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/HomePage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/SearchpageView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/SearchpageView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/GUI/UpdatePageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/network/ClientTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/client/network/ClientTask.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/dsdictionary/server/ClientHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +36,20 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Crystallen1&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="530ac520-fe83-400d-98b7-04794ca3ae4c" />
+        <option name="url" value="https://github.com/Crystallen1/DSDictinary.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -87,7 +101,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -188,7 +202,12 @@
       <workItem from="1711014307466" duration="6167000" />
       <workItem from="1711022312680" duration="911000" />
       <workItem from="1711023227998" duration="54215000" />
-      <workItem from="1711795200931" duration="18295000" />
+      <workItem from="1711795200931" duration="19298000" />
+      <workItem from="1712226240744" duration="168000" />
+      <workItem from="1712226416372" duration="525000" />
+      <workItem from="1712230292392" duration="56000" />
+      <workItem from="1712230355576" duration="194000" />
+      <workItem from="1712230555880" duration="4898000" />
     </task>
     <task id="LOCAL-00001" summary="build the demo project">
       <option name="closed" value="true" />
@@ -334,7 +353,23 @@
       <option name="project" value="LOCAL" />
       <updated>1712222232980</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="change alert word to English&#10;fix a bug in UpdatePageController">
+      <option name="closed" value="true" />
+      <created>1712224504923</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1712224504923</updated>
+    </task>
+    <task id="LOCAL-00020" summary="change alert word to English&#10;fix a bug in UpdatePageController">
+      <option name="closed" value="true" />
+      <created>1712224633985</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1712224633985</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -369,7 +404,12 @@
     <MESSAGE value="自己设计的简易线程池实现" />
     <MESSAGE value="完善字典界面的搜索功能" />
     <MESSAGE value="全部完成" />
-    <option name="LAST_COMMIT_MESSAGE" value="全部完成" />
+    <MESSAGE value="change alert word to English&#10;fix a bug in UpdatePageController" />
+    <option name="LAST_COMMIT_MESSAGE" value="change alert word to English&#10;fix a bug in UpdatePageController" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/DSDictionary$HomePage.ic" NAME="HomePage Coverage Results" MODIFIED="1710921188328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
