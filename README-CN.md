@@ -24,11 +24,11 @@ mvn clean compile assembly:single -Pserver
 
 对于服务器的jar，运行命令如下：
 ```
-java -jar [jar文件名] [端口号]
+java -jar [jar文件名] [端口号] [数据库文件]
 ```
 对于客户端的jar，由于JavaFX在使用Maven构建时存在bug，我们需要先从JavaFX的官网上下载适合你电脑的SDK，然后运行以下命令启动：
 ```
-java --module-path [SDK的lib目录路径] --add-modules javafx.controls,javafx.fxml -jar [jar文件名] [端口号] [数据库文件]
+java --module-path [SDK的lib目录路径] --add-modules javafx.controls,javafx.fxml -jar [jar文件名] [hostname] [端口号] 
 ```
 以上命令中的端口号和数据库文件都设置了默认值，如果是和github仓库相同的目录格式，可以不填写。
 ### 已知问题
